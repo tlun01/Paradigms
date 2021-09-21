@@ -46,7 +46,7 @@ class View extends JPanel
 	
 	public void paintComponent(Graphics g)
 	{
-		g.setColor(new Color(128, 255, 255));
+		g.setColor(new Color(128, 205, 255));
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
 		g.drawImage(this.turtle_image, model.turtle_x, model.turtle_y, null);
 	}
