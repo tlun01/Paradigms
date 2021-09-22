@@ -6,32 +6,32 @@ import java.util.ArrayList;
 
 public class Model 
 {
-	int turtle_x;
-	int turtle_y;
+//	int turtle_x;
+//	int turtle_y;
 	int dest_x;
 	int dest_y;
 	int dest_x1;
 	int dest_y1;
+	int cameraPos;
 	ArrayList<Brick> bricks;
 
 	Model()
 	{
 		bricks = new ArrayList<Brick>();
-	//	Brick b = new Brick(400, 300, 200, 100);
-	//	bricks.add(b);
+
 	}
 
 	public void update()
 	{
-		// Move the turtle
-		//if(this.turtle_x < this.dest_x)
-		//	this.turtle_x += Math.min(4, dest_x - turtle_x);
-		//else if(this.turtle_x > this.dest_x)
-		//	this.turtle_x -= Math.max(4, dest_x - turtle_x);
-		//if(this.turtle_y < this.dest_y)
-		//	this.turtle_y += Math.min(4, dest_y - turtle_y);
-		//else if(this.turtle_y > this.dest_y)
-		//	this.turtle_y -= Math.max(4, dest_y - turtle_y);
+	//	// Move the turtle
+	//	if(this.turtle_x < this.dest_x)
+	//		this.turtle_x += Math.min(4, dest_x - turtle_x);
+	//	else if(this.turtle_x > this.dest_x)
+	//		this.turtle_x -= Math.max(4, dest_x - turtle_x);
+	//	if(this.turtle_y < this.dest_y)
+	//		this.turtle_y += Math.min(4, dest_y - turtle_y);
+	//	else if(this.turtle_y > this.dest_y)
+	//		this.turtle_y -= Math.max(4, dest_y - turtle_y);
 	}
 
 	public void setDestination(int x, int y)
@@ -46,7 +46,7 @@ public class Model
 		this.dest_x1 = x;
 		this.dest_y1 = y;
 		System.out.println(x + " " + y);
-
+		bricks.add(new Brick(dest_x + cameraPos, dest_y, dest_x1 - dest_x, dest_y1 - dest_y));
 	}
 
 	    // Marshals this object into a JSON DOM
@@ -61,4 +61,11 @@ public class Model
         return ob;
     }
 
+	public void unmarshal(Json ob)
+	{
+       bricks = new ArrayList<Brick>();
+       Json tmpList = ob.get("bricks");
+       for(int i = 0; i < tmpList.size(); i++)
+           bricks.add(new Brick(tmpList.get(i)));
+	}
 }

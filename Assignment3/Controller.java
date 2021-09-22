@@ -44,11 +44,12 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	{
 		model.setDestination(e.getX(), e.getY());
 	}
-	public void mouseReleased(MouseEvent e) 
+	
+	public void mouseReleased(MouseEvent e)
 	{
 		model.setDestination1(e.getX(), e.getY());
 	}
-
+	
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseClicked(MouseEvent e) {}
@@ -81,13 +82,16 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		if(c == 's' || c == 'S')
 		{
 			model.marshal().save("map.json");
-			System.out.println("Your map has been saved.");
+			System.out.println("Your map has been saved!");
 		}
-		if(c == 'l')
+		if(c == 'l' || c == 'L')
 		{
-
+			Json j = Json.load("map.json");
+			j.save("temp.json");
+			model.unmarshal(j);
+			System.out.println("You have loaded your map!");
 		}
-	}
+	 }
 
 	public void keyTyped(KeyEvent e)
 	{
@@ -95,8 +99,8 @@ class Controller implements ActionListener, MouseListener, KeyListener
 
 	void update()
 	{
-		if(keyRight) model.dest_x+=4;
-		if(keyLeft) model.dest_x-=4;
+		if(keyRight) model.cameraPos+=4;
+		if(keyLeft) model.cameraPos-=4;
 		if(keyDown) model.dest_y+=4;
 		if(keyUp) model.dest_y-=4;
 	}

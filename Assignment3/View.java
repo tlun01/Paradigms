@@ -22,25 +22,15 @@ class View extends JPanel
 		
 	public void paintComponent(Graphics g)
 	{
-		int x;
-		int y;
-		int w;
-		int h;
-
 		g.setColor(new Color(128, 255, 255));
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
+
 		for(int i = 0; i < model.bricks.size(); i ++)
 		{
 			Brick b = model.bricks.get(i);
 			g.setColor(new Color(0));
-			g.fillRect(b.x, b.y, b.w, b.h);
+			g.fillRect(b.x - model.cameraPos, b.y, b.w, b.h);
 		}
-		x = model.dest_x;
-		y = model.dest_y;
-		w = model.dest_x1;
-		h = model.dest_y1;
-		g.setColor(new Color(0));
-		g.fillRect(x, y, w-x, h-y);
 	}
 	
 }

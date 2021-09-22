@@ -9,6 +9,15 @@ public class Brick
         w = w1;
         h = h1;
     }
+
+    public Brick(Json ob) 
+    {
+        x = (int)ob.getLong("x");
+        y = (int)ob.getLong("y");
+        w = (int)ob.getLong("w");
+        h = (int)ob.getLong("h");
+    }
+
     Json marshal()
     {
 
@@ -19,4 +28,13 @@ public class Brick
         ob.add("h", h);
         return ob;
     }
+
+//    public void unmarshal(Json ob)
+//    {
+//     x = (int)ob.getLong("x");
+//     y = (int)ob.getLong("y");
+//     w = (int)ob.getLong("w");
+//     h = (int)ob.getLong("h");
+        
+//    }
 }
