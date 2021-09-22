@@ -40,7 +40,7 @@ class View extends JPanel
 		w = model.dest_x1;
 		h = model.dest_y1;
 		g.setColor(new Color(0));
-		g.fillRect(x, y, w, h);
+		g.fillRect(x, y, w-x, h-y);
 	}
 	
 }
