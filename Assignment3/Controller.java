@@ -44,7 +44,11 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	{
 		model.setDestination(e.getX(), e.getY());
 	}
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) 
+	{
+		model.setDestination1(e.getX(), e.getY());
+	}
+
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseClicked(MouseEvent e) {}

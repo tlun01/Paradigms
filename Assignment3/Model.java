@@ -10,32 +10,43 @@ public class Model
 	int turtle_y;
 	int dest_x;
 	int dest_y;
+	int dest_x1;
+	int dest_y1;
 	ArrayList<Brick> bricks;
 
 	Model()
 	{
 		bricks = new ArrayList<Brick>();
-		Brick b = new Brick(400, 300, 200, 100);
-		bricks.add(b);
+	//	Brick b = new Brick(400, 300, 200, 100);
+	//	bricks.add(b);
 	}
 
 	public void update()
 	{
 		// Move the turtle
-		if(this.turtle_x < this.dest_x)
-			this.turtle_x += Math.min(4, dest_x - turtle_x);
-		else if(this.turtle_x > this.dest_x)
-			this.turtle_x -= Math.max(4, dest_x - turtle_x);
-		if(this.turtle_y < this.dest_y)
-			this.turtle_y += Math.min(4, dest_y - turtle_y);
-		else if(this.turtle_y > this.dest_y)
-			this.turtle_y -= Math.max(4, dest_y - turtle_y);
+		//if(this.turtle_x < this.dest_x)
+		//	this.turtle_x += Math.min(4, dest_x - turtle_x);
+		//else if(this.turtle_x > this.dest_x)
+		//	this.turtle_x -= Math.max(4, dest_x - turtle_x);
+		//if(this.turtle_y < this.dest_y)
+		//	this.turtle_y += Math.min(4, dest_y - turtle_y);
+		//else if(this.turtle_y > this.dest_y)
+		//	this.turtle_y -= Math.max(4, dest_y - turtle_y);
 	}
 
 	public void setDestination(int x, int y)
 	{
 		this.dest_x = x;
 		this.dest_y = y;
+		System.out.println(x + " " + y);
+	}
+
+	public void setDestination1(int x, int y)
+	{
+		this.dest_x1 = x;
+		this.dest_y1 = y;
+		System.out.println(x + " " + y);
+
 	}
 
 	    // Marshals this object into a JSON DOM
