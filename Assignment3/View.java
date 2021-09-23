@@ -1,6 +1,6 @@
 //Thomas Lunsford
-//9-10-21
-//Creating a "game" in which the user can control a turtle and move it around the screen with either the arrow keys or the mouse
+//9-22-21
+//A program that allows a user to create "bricks" and can save/load the map
 
 import javax.swing.JPanel;
 import java.awt.Color;

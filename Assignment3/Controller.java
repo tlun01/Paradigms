@@ -1,6 +1,6 @@
 //Thomas Lunsford
-//9-10-21
-//Creating a "game" in which the user can control a turtle and move it around the screen with either the arrow keys or the mouse
+//9-22-21
+//A program that allows a user to create "bricks" and can save/load the map
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -23,7 +23,6 @@ class Controller implements ActionListener, MouseListener, KeyListener
 
 	public void actionPerformed(ActionEvent e)
 	{
-		//System.out.println("Hey! I said not to push that button!");
 	}
 	
 	View view;
@@ -84,6 +83,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 			model.marshal().save("map.json");
 			System.out.println("Your map has been saved!");
 		}
+		//load
 		if(c == 'l' || c == 'L')
 		{
 			Json j = Json.load("map.json");

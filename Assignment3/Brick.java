@@ -1,7 +1,11 @@
+//Thomas Lunsford
+//9-22-21
+//A program that allows a user to create "bricks" and can save/load the map
+
 public class Brick 
 {
     int x, y, w, h;
-
+    
     public Brick(int x1, int y1, int w1, int h1)
     {
         x = x1;
