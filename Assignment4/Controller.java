@@ -87,7 +87,6 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		if(c == 'l' || c == 'L')
 		{
 			Json j = Json.load("map.json");
-			j.save("temp.json");
 			model.unmarshal(j);
 			System.out.println("You have loaded your map!");
 		}
