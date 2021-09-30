@@ -10,8 +10,11 @@ public class Model
 	int dest_y;
 	int dest_x1;
 	int dest_y1;
+	int mario_x;
+	int mario_y;
 	int cameraPos;
 	ArrayList<Brick> bricks;
+	Mario mario;
 
 	Model()
 	{
@@ -21,23 +24,28 @@ public class Model
 
 	public void update()
 	{
-
+		mario.update();
 	}
 
 	public void setDestination(int x, int y)
 	{
 		this.dest_x = x;
 		this.dest_y = y;
-		System.out.println(x + " " + y);
+		//System.out.println(x + " " + y);
 	}
 
 	public void setDestination1(int x, int y)
 	{
 		this.dest_x1 = x;
 		this.dest_y1 = y;
-		System.out.println(x + " " + y);
+		//System.out.println(x + " " + y);
 		bricks.add(new Brick(dest_x + cameraPos, dest_y, dest_x1 - dest_x, dest_y1 - dest_y));
 	}
+
+	// public void marioDest(int x)
+	// {
+	// 	this.mario_x = x;
+	// }
 
 	    // Marshals this object into a JSON DOM
     Json marshal()

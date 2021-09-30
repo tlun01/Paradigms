@@ -49,7 +49,7 @@ public class Game extends JFrame
 				e.printStackTrace();
 				System.exit(1);
 			}
-			//System.out.println("hi"); // remove this line
+
 		}
 	}
 }

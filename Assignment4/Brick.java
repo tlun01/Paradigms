@@ -1,3 +1,6 @@
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 public class Brick 
 {
     int x, y, w, h;

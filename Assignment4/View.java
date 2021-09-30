@@ -38,7 +38,7 @@ class View extends JPanel
 	{
 		g.setColor(new Color(128, 255, 255));
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
-		g.drawImage(mario_images[0],0, 0, null);
+		g.drawImage(mario_images[0], model.mario_x, model.mario_y, null);
 
 		for(int i = 0; i < model.bricks.size(); i ++)
 		{
