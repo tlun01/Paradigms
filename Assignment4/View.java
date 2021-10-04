@@ -16,10 +16,13 @@ class View extends JPanel
 {
 	Model model;
 	BufferedImage[] mario_images;
+	int cameraPos;
 
 	View(Controller c, Model m)
 	{
+		c.setView(this);
 		model = m;
+		cameraPos = 0;
 
 		mario_images = new BufferedImage[5];
 		try{
@@ -36,16 +39,19 @@ class View extends JPanel
 		
 	public void paintComponent(Graphics g)
 	{
+		//background color
 		g.setColor(new Color(128, 255, 255));
+		//draw background
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
-		g.drawImage(mario_images[0], model.mario_x, model.mario_y, null);
-
+		//draw brick
 		for(int i = 0; i < model.bricks.size(); i ++)
 		{
 			Brick b = model.bricks.get(i);
 			g.setColor(new Color(0));
-			g.fillRect(b.x - model.cameraPos, b.y, b.w, b.h);
+			g.fillRect(b.x - cameraPos, b.y, b.w, b.h);
 		}
+		//draw mario
+		g.drawImage(this.mario_images[0], model.mario.x, model.mario.y, null);
 	}
 	
 }

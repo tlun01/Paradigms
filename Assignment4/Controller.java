@@ -16,6 +16,9 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	boolean keyRight;
 	boolean keyUp;
 	boolean keyDown;
+	View view;
+	Model model;
+	Brick brick;
 	
 	Controller()
 	{
@@ -26,14 +29,10 @@ class Controller implements ActionListener, MouseListener, KeyListener
 
 	}
 	
-	View view;
-	
 	void setView(View v)
 	{
 		view = v;
 	}
-	
-	Model model;
 	
 	Controller(Model m)
 	{
@@ -43,11 +42,14 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	public void mousePressed(MouseEvent e)
 	{
 		model.setDestination(e.getX(), e.getY());
+	//	b = new Brick(e.getX() + model.cameraPos, e.getY());
 	}
 	
 	public void mouseReleased(MouseEvent e)
 	{
 		model.setDestination1(e.getX(), e.getY());
+
+
 	}
 	
 	public void mouseEntered(MouseEvent e) {}
@@ -98,8 +100,8 @@ class Controller implements ActionListener, MouseListener, KeyListener
 
 	void update()
 	{
-		if(keyRight) model.cameraPos+=4;
-		if(keyLeft) model.cameraPos-=4;
+		if(keyRight) view.cameraPos+=4;
+		if(keyLeft) view.cameraPos-=4;
 		if(keyDown) model.dest_y+=4;
 		if(keyUp) model.dest_y-=4;
 	}

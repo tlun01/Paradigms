@@ -17,8 +17,8 @@ public class Game extends JFrame
 		controller = new Controller(model);
 		view = new View(controller, model);
 		view.addMouseListener(controller);
-		this.setTitle("Mario Side Scroller");
-		this.setSize(500, 500);
+		this.setTitle("A4 - Mario Side Scroller");
+		this.setSize(800, 600);
 		this.setFocusable(true);
 		this.getContentPane().add(view);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
