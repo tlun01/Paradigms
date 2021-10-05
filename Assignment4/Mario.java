@@ -20,10 +20,10 @@ public class Mario
 		vert_vel += 1.2;
 		y += vert_vel;
 
-        if(y > 500)
+        if(y > 400)
 		{
 			vert_vel = 0.0;
-			y = 500; // snap back to the ground
+			y = 400; // snap back to the ground
 		}
 	}
 }

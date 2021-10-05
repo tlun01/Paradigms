@@ -19,6 +19,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	View view;
 	Model model;
 	Brick brick;
+	boolean edit = false;
 	
 	Controller()
 	{
@@ -41,15 +42,17 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	
 	public void mousePressed(MouseEvent e)
 	{
-		model.setDestination(e.getX(), e.getY());
-	//	b = new Brick(e.getX() + model.cameraPos, e.getY());
+		if (edit)
+			brick = new Brick(e.getX() + view.cameraPos, e.getY());
 	}
 	
 	public void mouseReleased(MouseEvent e)
 	{
-		model.setDestination1(e.getX(), e.getY());
-
-
+		if(edit)
+		{
+			brick.endBrick(e.getX() + view.cameraPos, e.getY());
+			model.bricks.add(brick);
+		}
 	}
 	
 	public void mouseEntered(MouseEvent e) {}
@@ -86,11 +89,18 @@ class Controller implements ActionListener, MouseListener, KeyListener
 			model.marshal().save("map.json");
 			System.out.println("Your map has been saved!");
 		}
+		//load
 		if(c == 'l' || c == 'L')
 		{
 			Json j = Json.load("map.json");
 			model.unmarshal(j);
 			System.out.println("You have loaded your map!");
+		}
+		//edit
+		if(c =='e' || c == 'E')
+		{
+			edit = !edit;
+			System.out.println("Edit mode: " + edit);
 		}
 	 }
 
@@ -102,7 +112,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	{
 		if(keyRight) view.cameraPos+=4;
 		if(keyLeft) view.cameraPos-=4;
-		if(keyDown) model.dest_y+=4;
-		if(keyUp) model.dest_y-=4;
+		//if(keyDown);
+		//if(keyUp) ;
 	}
 }

@@ -6,10 +6,7 @@ import java.util.ArrayList;
 
 public class Model 
 {
-	int dest_x;
-	int dest_y;
-	int dest_x1;
-	int dest_y1;
+
 	int cameraPos;
 	ArrayList<Brick> bricks;
 	Mario mario;
@@ -18,32 +15,16 @@ public class Model
 	{
 		bricks = new ArrayList<Brick>();
 		mario = new Mario();
+
+		Json j = Json.load("map.json");
+		unmarshal(j);
+		System.out.println("Map Loaded!");
 	}
 
 	public void update()
 	{
 		mario.update();
 	}
-
-	public void setDestination(int x, int y)
-	{
-		this.dest_x = x;
-		this.dest_y = y;
-		System.out.println("beg. " + x + " " + y);
-	}
-
-	public void setDestination1(int x, int y)
-	{
-		this.dest_x1 = x;
-		this.dest_y1 = y;
-		System.out.println("end " + x + " " + y);
-		bricks.add(new Brick(dest_x + cameraPos, dest_y, dest_x1 - dest_x, dest_y1 - dest_y));
-	}
-
-	// public void marioDest(int x)
-	// {
-	// 	this.mario_x = x;
-	// }
 
 	    // Marshals this object into a JSON DOM
     Json marshal()
