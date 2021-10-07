@@ -7,7 +7,8 @@ public class Mario
     int x;
     int y;
     double vert_vel;
-    static BufferedImage image = null;
+    static BufferedImage[] images = null;
+    int imageNum = 3;
 
 
     public Mario()
@@ -16,9 +17,15 @@ public class Mario
         y = 0;
         vert_vel = 0;
 
-        if(image == null)
+        if(images == null)
         {
-            image = View.loadImage("mario1.png");
+            images = new BufferedImage[5];
+
+            images[0] = View.loadImage("mario1.png");
+            images[1] = View.loadImage("mario2.png");
+            images[2] = View.loadImage("mario3.png");
+            images[3] = View.loadImage("mario4.png");
+            images[4] = View.loadImage("mario5.png");
         }
     }
 
@@ -36,7 +43,19 @@ public class Mario
 
     void draw (Graphics g)
     {
-        g.drawImage(image, x, y, null);
+        g.drawImage(images[imageNum], x, y, null);
+    }
+
+    // void drawBackward (Graphics g)
+    // {
+    //     g.drawImage(images[imageNum], x - 40, y, null);
+    // }
+
+    void updateImageNum()
+    {
+        imageNum++;
+        if(imageNum > 4)
+            imageNum = 0;
     }
 
 }

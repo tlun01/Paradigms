@@ -110,8 +110,16 @@ class Controller implements ActionListener, MouseListener, KeyListener
 
 	void update()
 	{
-		if(keyRight) view.cameraPos+=4;
-		if(keyLeft) view.cameraPos-=4;
+		if(keyRight) 
+		{
+			view.cameraPos+= 4;
+			model.mario.updateImageNum();
+		}
+		if(keyLeft)
+		{
+			model.mario.updateImageNum();
+			view.cameraPos-= 4;
+		}
 		//if(keyDown);
 		//if(keyUp) ;
 	}

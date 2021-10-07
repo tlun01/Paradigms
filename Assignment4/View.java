@@ -62,12 +62,13 @@ class View extends JPanel
 		for(int i = 0; i < model.bricks.size(); i ++)
 		{
 			Brick b = model.bricks.get(i);
-			g.setColor(new Color(0));
-			g.fillRect(b.x - cameraPos, b.y, b.w, b.h);
-			//b.draw(g);
+			// g.setColor(new Color(0));
+			// g.fillRect(b.x - cameraPos, b.y, b.w, b.h);
+			b.draw(g);
 		}
 		//draw mario
 		model.mario.draw(g);
+		
 	}
 	
 }
