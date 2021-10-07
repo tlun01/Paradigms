@@ -23,20 +23,35 @@ class View extends JPanel
 		c.setView(this);
 		model = m;
 		cameraPos = 0;
+	
+		//this.mario_images = loadImage("mario1.png");
 
-		mario_images = new BufferedImage[5];
+		// mario_images = new BufferedImage[5];
+		// try{
+		// mario_images[0] = ImageIO.read(new File("mario1.png"));
+		// mario_images[1] = ImageIO.read(new File("mario2.png"));
+		// mario_images[2] = ImageIO.read(new File("mario3.png"));
+		// mario_images[3] = ImageIO.read(new File("mario4.png"));
+		// mario_images[4] = ImageIO.read(new File("mario5.png"));
+		// }catch(Exception e){
+		// 	e.printStackTrace(System.err);
+		// 	System.exit(1);
+		// }
+	}
+		
+	static BufferedImage loadImage(String filename)
+	{
+		BufferedImage im = null;
+		
 		try{
-		mario_images[0] = ImageIO.read(new File("mario1.png"));
-		mario_images[1] = ImageIO.read(new File("mario2.png"));
-		mario_images[2] = ImageIO.read(new File("mario3.png"));
-		mario_images[3] = ImageIO.read(new File("mario4.png"));
-		mario_images[4] = ImageIO.read(new File("mario5.png"));
+			im = ImageIO.read(new File(filename));
 		}catch(Exception e){
 			e.printStackTrace(System.err);
 			System.exit(1);
 		}
+		return im;
 	}
-		
+
 	public void paintComponent(Graphics g)
 	{
 		//background color
@@ -49,9 +64,10 @@ class View extends JPanel
 			Brick b = model.bricks.get(i);
 			g.setColor(new Color(0));
 			g.fillRect(b.x - cameraPos, b.y, b.w, b.h);
+			//b.draw(g);
 		}
 		//draw mario
-		g.drawImage(this.mario_images[0], model.mario.x, model.mario.y, null);
+		model.mario.draw(g);
 	}
 	
 }

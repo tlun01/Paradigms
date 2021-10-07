@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 public class Brick 
 {
     int x, y, w, h;
+    BufferedImage image = null;
+
 
     public Brick(int x1, int y1)
     {
@@ -11,6 +13,7 @@ public class Brick
         y = y1;
         w = 10;
         h = 10;
+        loadImage();
     }
     public Brick(int x1, int y1, int w1, int h1)
     {
@@ -18,6 +21,8 @@ public class Brick
         y = y1;
         w = w1;
         h = h1;
+        loadImage();
+
     }
 
     public Brick(Json ob) 
@@ -26,6 +31,8 @@ public class Brick
         y = (int)ob.getLong("y");
         w = (int)ob.getLong("w");
         h = (int)ob.getLong("h");
+        loadImage();
+
     }
 
     public void endBrick(int x2, int y2)
@@ -37,6 +44,15 @@ public class Brick
             x = x2;
         if(y2 < y)
             y= y2;
+            
+        loadImage();
+
+    }
+    
+    void loadImage()
+    {
+        if(image == null)
+            image = View.loadImage("brick.png");
     }
 
     Json marshal()
@@ -48,6 +64,11 @@ public class Brick
         ob.add("w", w);
         ob.add("h", h);
         return ob;
+    }
+
+    void draw(Graphics g)
+    {
+        g.drawImage(image, x, y, w, h, null);
     }
 
 }
