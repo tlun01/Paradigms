@@ -66,9 +66,15 @@ public class Brick
         return ob;
     }
 
-    void draw(Graphics g)
+    @Override
+    public String toString()
     {
-        g.drawImage(image, x, y, w, h, null);
+        return "Brick located at (" + x + ", " + y + ") with a width = " + w + "and a height = " + h;
+    }
+
+    void draw(Graphics g, int marioScreenLocation)
+    {
+        g.drawImage(image, x - Mario.x + marioScreenLocation, y, w, h, null);
     }
 
 }

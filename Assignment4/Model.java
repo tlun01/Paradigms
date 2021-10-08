@@ -24,8 +24,61 @@ public class Model
 	public void update()
 	{
 		mario.update();
+		checkCollisions();
 	}
 
+	void checkCollisions()
+	{
+		for(int i = 0; i < bricks.size(); i ++)
+		{
+			Brick b = bricks.get(i);
+			if(marioIsColliding(b))
+			{
+				// System.out.println("I'm colliding!");
+				// System.out.println(mario);
+				// System.out.println(b + "\n");
+			
+				//on top of the brick
+				if(mario.py <= b.y)
+				{
+					mario.y = b.y - mario.h;
+					mario.vert_vel = 0.0;
+				}				
+				//running into the left side of the brick
+				else if(mario.px <= b.x)
+					mario.x = b.x - mario.w;
+				//running into the right side of the brick 
+				else if(mario.px >= b.x + b.w)
+				{
+					mario.x = b.x + b.w;
+				}
+				//underneath the brick
+				else if(mario.py >= b.y + b.h)
+				{	
+					mario.y = b.y + b.h;
+					mario.frameCounter = 6;
+					mario.vert_vel += 5.3;
+				}
+			}
+			
+		}
+	}
+
+	boolean marioIsColliding(Brick b)
+	{
+		//Mario Right < Brick Left
+		if(mario.x + mario.w < b.x)
+			return false;
+		//Mario Left > Brick Right
+		if(mario.x > b.x + b.w)
+			return false;
+		if(mario.y > b.y + b.h)
+			return false;
+		if(mario.y + mario.h < b.y)
+			return false;
+
+		return true;
+	}
 	    // Marshals this object into a JSON DOM
     Json marshal()
     {

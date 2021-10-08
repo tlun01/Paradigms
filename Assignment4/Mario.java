@@ -4,16 +4,21 @@ import java.awt.image.BufferedImage;
 
 public class Mario 
 {
-    int x;
-    int y;
+    static int x;
+    int y, px, py;
+    final int w = 60;
+    final int h = 95;
     double vert_vel;
     static BufferedImage[] images = null;
     int imageNum = 3;
+    int marioScreenLocation;
+    int frameCounter;
 
 
     public Mario()
     {
-        x = 200;
+        marioScreenLocation = 150;
+        x = 0;
         y = 0;
         vert_vel = 0;
 
@@ -31,7 +36,16 @@ public class Mario
 
     void update()
 	{
-		vert_vel += 1.2;
+        if(vert_vel != 0.0)
+        {
+            frameCounter++;
+        }
+        else
+        {
+            frameCounter = 0;
+        }
+
+        vert_vel += 1.2;
 		y += vert_vel;
 
         if(y > 400)
@@ -39,16 +53,25 @@ public class Mario
 			vert_vel = 0.0;
 			y = 400; // snap back to the ground
 		}
+
+
+        //       System.out.println("x, y = " + x + ", " + y +" px, py = " + px + ", " + py);
 	}
+
+    @Override
+    public String toString()
+    {
+        return "Mario located at (" + x + ", " + y + ") with a width = " + w + "and a height = " + h;
+    }
 
     void draw (Graphics g)
     {
-        g.drawImage(images[imageNum], x, y, null);
+        g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation, y,null);
     }
 
     // void drawBackward (Graphics g)
     // {
-    //     g.drawImage(images[imageNum], x - 40, y, null);
+    //     g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation, y, -w, h,null);
     // }
 
     void updateImageNum()

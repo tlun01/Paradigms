@@ -15,28 +15,14 @@ import javax.swing.JButton;
 class View extends JPanel
 {
 	Model model;
-	BufferedImage[] mario_images;
-	int cameraPos;
+	//int cameraPos;
 
 	View(Controller c, Model m)
 	{
 		c.setView(this);
 		model = m;
-		cameraPos = 0;
-	
-		//this.mario_images = loadImage("mario1.png");
+		
 
-		// mario_images = new BufferedImage[5];
-		// try{
-		// mario_images[0] = ImageIO.read(new File("mario1.png"));
-		// mario_images[1] = ImageIO.read(new File("mario2.png"));
-		// mario_images[2] = ImageIO.read(new File("mario3.png"));
-		// mario_images[3] = ImageIO.read(new File("mario4.png"));
-		// mario_images[4] = ImageIO.read(new File("mario5.png"));
-		// }catch(Exception e){
-		// 	e.printStackTrace(System.err);
-		// 	System.exit(1);
-		// }
 	}
 		
 	static BufferedImage loadImage(String filename)
@@ -58,13 +44,17 @@ class View extends JPanel
 		g.setColor(new Color(128, 255, 255));
 		//draw background
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
+		//g.drawImage(loadImage["cloudbackground.jpg"], this.getWidth(),this.getHeight() ,null);
+		//draw ground
+		g.setColor(new Color(0, 0, 0));
+		g.drawLine(0,496,2000,496);
 		//draw brick
 		for(int i = 0; i < model.bricks.size(); i ++)
 		{
 			Brick b = model.bricks.get(i);
 			// g.setColor(new Color(0));
 			// g.fillRect(b.x - cameraPos, b.y, b.w, b.h);
-			b.draw(g);
+			b.draw(g, model.mario.marioScreenLocation);
 		}
 		//draw mario
 		model.mario.draw(g);
