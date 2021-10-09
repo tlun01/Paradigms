@@ -15,7 +15,7 @@ import javax.swing.JButton;
 class View extends JPanel
 {
 	Model model;
-	//int cameraPos;
+	BufferedImage background = loadImage("cloudbackground.jpg");
 
 	View(Controller c, Model m)
 	{
@@ -44,7 +44,7 @@ class View extends JPanel
 		g.setColor(new Color(128, 255, 255));
 		//draw background
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
-		//g.drawImage(loadImage["cloudbackground.jpg"], this.getWidth(),this.getHeight() ,null);
+		g.drawImage(background, -100, 0, 1000, this.getHeight(), null);
 		//draw ground
 		g.setColor(new Color(0, 0, 0));
 		g.drawLine(0,496,2000,496);
