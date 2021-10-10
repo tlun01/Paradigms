@@ -13,7 +13,7 @@ public class Mario
     final int h = 95;
     double vert_vel;
     static BufferedImage[] images = null;
-    int imageNum = 0;
+    int imageNum;
     int marioScreenLocation;
     int frameCounter;
     static boolean direction = true;
@@ -69,6 +69,13 @@ public class Mario
         return "Mario located at (" + x + ", " + y + ") with a width = " + w + "and a height = " + h;
     }
 
+    void updateImageNum()
+    {
+        imageNum++;
+        if(imageNum > 4)
+            imageNum = 0; 
+    }
+
     void draw (Graphics g, boolean direction)
     {
         if(direction == true)   //facing right
@@ -78,27 +85,6 @@ public class Mario
 
     }
 
-    void updateImageNum()
-    {
-        // imageNum++;
-        // if(imageNum > 4)
-        //     imageNum = 0; 
-        
-        ArrayList<Integer> num = new ArrayList<Integer>();
-        num.add(0);
-        num.add(1);
-        num.add(2);
-        num.add(3);
-        num.add(4);
-        Iterator<Integer> iter = num.iterator();
 
-
-        if(!iter.hasNext())
-            iter = num.iterator();
-        while(iter.hasNext())
-        System.out.println(iter.next() + "\n");
-        imageNum = iter.next();
-  
-    }
 
 }

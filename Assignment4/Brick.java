@@ -70,7 +70,7 @@ public class Brick
     @Override
     public String toString()
     {
-        return "Brick located at (" + x + ", " + y + ") with a width = " + w + "and a height = " + h;
+        return "Brick located at (" + x + ", " + y + ") with a width = " + w + " and a height = " + h;
     }
 
     void draw(Graphics g, int marioScreenLocation)

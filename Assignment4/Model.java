@@ -3,6 +3,7 @@
 //Creating a "game" in which the user can control a turtle and move it around the screen with either the arrow keys or the mouse
 
 import java.util.ArrayList;
+import java.util.*;
 
 public class Model 
 {
@@ -42,7 +43,14 @@ public class Model
 				{
 					mario.y = b.y - mario.h;
 					mario.vert_vel = 0.0;
-				}				
+				}	
+				//underneath the brick
+				else if(mario.py >= b.y + b.h)
+				{	
+					mario.y = b.y + b.h;
+					mario.frameCounter = 6;
+					mario.vert_vel += 5.3;
+				}			
 				//running into the left side of the brick
 				else if(mario.px <= b.x)
 					mario.x = b.x - mario.w;
@@ -51,15 +59,7 @@ public class Model
 				{
 					mario.x = b.x + b.w;
 				}
-				//underneath the brick
-				else if(mario.py >= b.y + b.h)
-				{	
-					mario.y = b.y + b.h;
-					mario.frameCounter = 6;
-					mario.vert_vel += 5.3;
-				}
 			}
-			
 		}
 	}
 
@@ -98,5 +98,9 @@ public class Model
        Json tmpList = ob.get("bricks");
        for(int i = 0; i < tmpList.size(); i++)
            bricks.add(new Brick(tmpList.get(i)));
+		
+		Iterator<Brick> iter = bricks.iterator();
+		while(iter.hasNext())
+			System.out.println(iter.next() + "\n");
 	}
 }
