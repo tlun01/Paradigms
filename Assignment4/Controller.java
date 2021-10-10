@@ -67,6 +67,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 			case KeyEvent.VK_LEFT: keyLeft = true; break;
 			case KeyEvent.VK_UP : keyUp = true; break;
 			case KeyEvent.VK_DOWN: keyDown = true; break;
+			case KeyEvent.VK_SPACE: keyUp = true; break;
 		
 		}
 	}
@@ -79,6 +80,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 			case KeyEvent.VK_LEFT: keyLeft = false; break;
 			case KeyEvent.VK_UP: keyUp = false; break;
 			case KeyEvent.VK_DOWN: keyDown = false; break;
+			case KeyEvent.VK_SPACE: keyUp = false; break;
 			case KeyEvent.VK_ESCAPE: System.out.println("Exiting now..."); System.exit(0); break;
 		}
 
