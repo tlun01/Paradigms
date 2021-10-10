@@ -1,6 +1,9 @@
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.*;
+
 
 public class Mario 
 {
@@ -10,9 +13,12 @@ public class Mario
     final int h = 95;
     double vert_vel;
     static BufferedImage[] images = null;
-    int imageNum = 3;
+    int imageNum = 0;
     int marioScreenLocation;
     int frameCounter;
+    static boolean direction = true;
+
+   
 
 
     public Mario()
@@ -25,22 +31,23 @@ public class Mario
         if(images == null)
         {
             images = new BufferedImage[5];
-
             images[0] = View.loadImage("mario1.png");
             images[1] = View.loadImage("mario2.png");
             images[2] = View.loadImage("mario3.png");
             images[3] = View.loadImage("mario4.png");
             images[4] = View.loadImage("mario5.png");
         }
+
+
     }
 
     void update()
 	{
-        if(vert_vel != 0.0)
+        if(vert_vel != 0.0) //if not standing on ground or brick start counting frames
         {
             frameCounter++;
         }
-        else
+        else    //once landed set frames back to zero
         {
             frameCounter = 0;
         }
@@ -54,8 +61,6 @@ public class Mario
 			y = 400; // snap back to the ground
 		}
 
-
-        //       System.out.println("x, y = " + x + ", " + y +" px, py = " + px + ", " + py);
 	}
 
     @Override
@@ -64,21 +69,36 @@ public class Mario
         return "Mario located at (" + x + ", " + y + ") with a width = " + w + "and a height = " + h;
     }
 
-    void draw (Graphics g)
+    void draw (Graphics g, boolean direction)
     {
-        g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation, y,null);
-    }
+        if(direction == true)   //facing right
+            g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation, y,null);
+        else if(direction == false) //facing left
+            g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation + w, y, -w, h, null);
 
-    // void drawBackward (Graphics g)
-    // {
-    //     g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation, y, -w, h,null);
-    // }
+    }
 
     void updateImageNum()
     {
-        imageNum++;
-        if(imageNum > 4)
-            imageNum = 0;
+        // imageNum++;
+        // if(imageNum > 4)
+        //     imageNum = 0; 
+        
+        ArrayList<Integer> num = new ArrayList<Integer>();
+        num.add(0);
+        num.add(1);
+        num.add(2);
+        num.add(3);
+        num.add(4);
+        Iterator<Integer> iter = num.iterator();
+
+
+        if(!iter.hasNext())
+            iter = num.iterator();
+        while(iter.hasNext())
+        System.out.println(iter.next() + "\n");
+        imageNum = iter.next();
+  
     }
 
 }

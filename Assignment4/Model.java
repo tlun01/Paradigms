@@ -15,7 +15,6 @@ public class Model
 	{
 		bricks = new ArrayList<Brick>();
 		mario = new Mario();
-
 		Json j = Json.load("map.json");
 		unmarshal(j);
 		System.out.println("Map Loaded!");
@@ -72,8 +71,10 @@ public class Model
 		//Mario Left > Brick Right
 		if(mario.x > b.x + b.w)
 			return false;
+		//Mario Top underneath Brick Base
 		if(mario.y > b.y + b.h)
 			return false;
+		//Mario Base over Brick Top
 		if(mario.y + mario.h < b.y)
 			return false;
 

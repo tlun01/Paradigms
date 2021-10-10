@@ -16,13 +16,13 @@ class View extends JPanel
 {
 	Model model;
 	BufferedImage background = loadImage("cloudbackground.jpg");
+	BufferedImage floor = loadImage("floor.png");
+	int backgroundLocation;
 
 	View(Controller c, Model m)
 	{
 		c.setView(this);
 		model = m;
-		
-
 	}
 		
 	static BufferedImage loadImage(String filename)
@@ -44,20 +44,19 @@ class View extends JPanel
 		g.setColor(new Color(128, 255, 255));
 		//draw background
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
-		g.drawImage(background, -100, 0, 1000, this.getHeight(), null);
+		g.drawImage(background, -300 - Mario.x + backgroundLocation, 0, 1500, this.getHeight(), null);
 		//draw ground
-		g.setColor(new Color(0, 0, 0));
-		g.drawLine(0,496,2000,496);
+		// g.setColor(new Color(0, 0, 0));
+		// g.drawLine(0,496,2000,496);
+		g.drawImage(floor, -300 - Mario.x + model.mario.marioScreenLocation, 480, 1500, 100, null);
 		//draw brick
 		for(int i = 0; i < model.bricks.size(); i ++)
 		{
 			Brick b = model.bricks.get(i);
-			// g.setColor(new Color(0));
-			// g.fillRect(b.x - cameraPos, b.y, b.w, b.h);
 			b.draw(g, model.mario.marioScreenLocation);
 		}
 		//draw mario
-		model.mario.draw(g);
+		model.mario.draw(g, Mario.direction);
 		
 	}
 	

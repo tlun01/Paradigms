@@ -112,17 +112,21 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	{
 		if(keyRight) 
 		{
+			Mario.direction = true;
 			model.mario.px = model.mario.x;
 			model.mario.py = model.mario.y;
 			model.mario.x += 5;
+			view.backgroundLocation += 3;
 			model.mario.updateImageNum();
 		}
 		if(keyLeft)
 		{
+			Mario.direction = false;
 			model.mario.px = model.mario.x;
 			model.mario.py = model.mario.y;
 			model.mario.updateImageNum();
 			model.mario.x -= 5;
+			view.backgroundLocation -= 3;
 		}
 		//if(keyDown);
 		if(keyUp)
