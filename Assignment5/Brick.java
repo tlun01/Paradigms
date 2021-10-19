@@ -2,7 +2,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-class Brick extends Sprite
+public class Brick extends Sprite
 {
     BufferedImage image = null;
     Model model;

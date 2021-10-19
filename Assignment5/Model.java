@@ -13,7 +13,7 @@ public class Model
 	ArrayList<Sprite> sprites;
 
 	Model()
-	{
+	{	
 		sprites = new ArrayList<Sprite>();
 		mario = new Mario();
 		sprites.add(mario);
@@ -24,78 +24,28 @@ public class Model
 
 	public void update()
 	{
+		ArrayList<Sprite> coins = new ArrayList<Sprite>();
 		Iterator<Sprite> iter = sprites.iterator();
 		while(iter.hasNext())
 		{
 			Sprite s = iter.next();
 			s.update();
-			if(s.isBrick())
+			if(!s.update())
+			{
+				iter.remove();
+			}
+			else if(s.isBrick())
 			{
 				if(mario.checkCollision(s))
+				{
 					mario.getOutOfTheObstacle(s);
+					//coins.add()
+					//adding into an iterator is hard!
+				}
 			}
 		}
-		// for(int i = 0; i < sprites.size(); i++)
-		// {
-		// 	sprites.get(i).update();
-		// }
-		//mario.update();
-		//checkCollisions();
 	}
 
-	// void checkCollisions()
-	// {
-	// 	for(int i = 0; i < bricks.size(); i ++)
-	// 	{
-	// 		Brick b = bricks.get(i);
-	// 		if(marioIsColliding(b))
-	// 		{
-	// 			// System.out.println("I'm colliding!");
-	// 			// System.out.println(mario);
-	// 			// System.out.println(b + "\n");
-			
-	// 			//on top of the brick
-	// 			if(mario.py + mario.h <= b.y)
-	// 			{
-	// 				mario.y = b.y - mario.h;
-	// 				mario.vert_vel = 0.0;
-	// 			}	
-	// 			//underneath the brick
-	// 			else if(mario.py >= b.y + b.h)
-	// 			{	
-	// 				mario.y = b.y + b.h;
-	// 				mario.frameCounter = 6;
-	// 				mario.vert_vel += 5.3;
-	// 			}			
-	// 			//running into the left side of the brick
-	// 			else if(mario.px <= b.x)
-	// 				mario.x = b.x - mario.w;
-	// 			//running into the right side of the brick 
-	// 			else if(mario.px >= b.x + b.w)
-	// 			{
-	// 				mario.x = b.x + b.w;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// boolean marioIsColliding(Brick b)
-	// {
-	// 	//Mario Right < Brick Left
-	// 	if(mario.x + mario.w < b.x)
-	// 		return false;
-	// 	//Mario Left > Brick Right
-	// 	if(mario.x > b.x + b.w)
-	// 		return false;
-	// 	//Mario Top underneath Brick Base
-	// 	if(mario.y > b.y + b.h)
-	// 		return false;
-	// 	//Mario Base over Brick Top
-	// 	if(mario.y + mario.h < b.y)
-	// 		return false;
-
-	// 	return true;
-	// }
 	    // Marshals this object into a JSON DOM
     Json marshal()
     {

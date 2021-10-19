@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.*;
 
-class Mario extends Sprite
+public class Mario extends Sprite
 {
     int px, py;
     double vert_vel;
@@ -63,6 +63,17 @@ class Mario extends Sprite
             this.x = s.x - this.w;
         if(this.x <= s.w + s.w && this.px >= s.x + s.w)
             this.x = s.x +s.w;
+        if(this.y + this.h >= s.y && this.py + this.h <= s.y)
+            {
+                this.y = s.y - this.h;
+                vert_vel = 0.0;
+            }
+        if(this.y <= s.y + s.h && this.py >= s.y + s.h)
+            {
+                this.y = s.y + s.h;
+                frameCounter = 5;
+                vert_vel += 5.3;
+            }
     }
 
     void savePreviousCoords()
