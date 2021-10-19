@@ -4,13 +4,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.*;
 
-
-public class Mario 
+//25:03
+class Mario extends Sprite
 {
     static int x;
-    int y, px, py;
-    final int w = 60;
-    final int h = 95;
+    int px, py;
     double vert_vel;
     static BufferedImage[] images = null;
     int imageNum;
@@ -26,6 +24,8 @@ public class Mario
         marioScreenLocation = 150;
         x = 0;
         y = 0;
+        w = 60;
+        h = 95;
         vert_vel = 0;
 
         if(images == null)
@@ -84,7 +84,11 @@ public class Mario
             g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation + w, y, -w, h, null);
 
     }
-
-
+ 
+    @Override
+    boolean isMario()
+    {
+        return true;
+    }
 
 }

@@ -54,10 +54,14 @@ class View extends JPanel
 			floor =loadImage("floor.png");
 		g.drawImage(floor, -300 - Mario.x + model.mario.marioScreenLocation, 486, 1500, 100, null);
 		//draw brick
-		for(int i = 0; i < model.bricks.size(); i ++)
+		for(int i = 1; i < model.sprites.size(); i ++)
 		{
-			Brick b = model.bricks.get(i);
-			b.draw(g, model.mario.marioScreenLocation);
+			Sprite s = model.sprites.get(i);
+			if(s.isBrick())
+			{
+				Brick b = (Brick)model.sprites.get(i);
+				b.draw(g, model.mario.marioScreenLocation);
+			}
 		}
 		//draw mario
 		model.mario.draw(g, Mario.direction);

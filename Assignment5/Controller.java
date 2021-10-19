@@ -51,7 +51,7 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		if(edit)
 		{
 			brick.endBrick(e.getX() + Mario.x - model.mario.marioScreenLocation, e.getY());
-			model.bricks.add(brick);
+			model.sprites.add(brick);
 		}
 	}
 	

@@ -6,7 +6,7 @@ abstract class Sprite
     int y, w, h;
 
     abstract void update();
-    abstract void draw(Graphics g);
+  //  abstract void draw(Graphics g);
 
     boolean isBrick()
     {
