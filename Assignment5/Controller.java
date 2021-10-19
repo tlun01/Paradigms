@@ -43,14 +43,14 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	public void mousePressed(MouseEvent e)
 	   {
 		if (edit)
-			brick = new Brick(e.getX() + Mario.x - model.mario.marioScreenLocation, e.getY());
+			brick = new Brick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY(), model);
 	   }
 	
 	public void mouseReleased(MouseEvent e)
 	{
 		if(edit)
 		{
-			brick.endBrick(e.getX() + Mario.x - model.mario.marioScreenLocation, e.getY());
+			brick.endBrick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY());
 			model.sprites.add(brick);
 		}
 	}
@@ -112,11 +112,10 @@ class Controller implements ActionListener, MouseListener, KeyListener
 
 	void update()
 	{
+		model.mario.savePreviousCoords();
 		if(keyRight) 
 		{
 			Mario.direction = true;
-			model.mario.px = model.mario.x;
-			model.mario.py = model.mario.y;
 			model.mario.x += 5;
 			view.backgroundLocation += 2;
 			model.mario.updateImageNum();
@@ -124,8 +123,6 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		if(keyLeft)
 		{
 			Mario.direction = false;
-			model.mario.px = model.mario.x;
-			model.mario.py = model.mario.y;
 			model.mario.updateImageNum();
 			model.mario.x -= 5;
 			view.backgroundLocation -= 2;
@@ -133,7 +130,6 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		//if(keyDown);
 		if(keyUp)
 		{
-			model.mario.py = model.mario.y;
 			if(model.mario.frameCounter < 5)
 				model.mario.vert_vel -= 5.3;
 		} 

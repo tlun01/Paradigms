@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 class Brick extends Sprite
 {
-    int x;
     BufferedImage image = null;
     Model model;
 
@@ -75,14 +74,14 @@ class Brick extends Sprite
         return "Brick located at (" + x + ", " + y + ") with a width = " + w + " and a height = " + h;
     }
 
-    void update()
+    boolean update()
     {
-
+        return true;
     }
 
-    void draw(Graphics g, int marioScreenLocation)
+    void draw(Graphics g)
     {
-        g.drawImage(image, x - Mario.x + marioScreenLocation, y, w, h, null);
+        g.drawImage(image, x - model.mario.x + model.mario.marioScreenLocation, y, w, h, null);
     }
 
     @Override

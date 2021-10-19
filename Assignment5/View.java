@@ -46,26 +46,19 @@ class View extends JPanel
 		g.fillRect(0,  0, this.getWidth(), this.getHeight());
 		if(background == null)
 			background =loadImage("cloudbackground.jpg");
-		g.drawImage(background, -300 - Mario.x + backgroundLocation, 0, 1500, this.getHeight(), null);
+		g.drawImage(background, -300 - model.mario.x + backgroundLocation, 0, 1500, this.getHeight(), null);
 		//draw ground
 		g.setColor(new Color(0, 0, 0));
 		g.drawLine(0,496,2000,496);
 		if(floor == null)
 			floor =loadImage("floor.png");
-		g.drawImage(floor, -300 - Mario.x + model.mario.marioScreenLocation, 486, 1500, 100, null);
-		//draw brick
-		for(int i = 1; i < model.sprites.size(); i ++)
+		g.drawImage(floor, -300 - model.mario.x + model.mario.marioScreenLocation, 486, 1500, 100, null);
+		//draw sprites
+		for(int i = 0; i < model.sprites.size(); i ++)
 		{
 			Sprite s = model.sprites.get(i);
-			if(s.isBrick())
-			{
-				Brick b = (Brick)model.sprites.get(i);
-				b.draw(g, model.mario.marioScreenLocation);
-			}
-		}
-		//draw mario
-		model.mario.draw(g, Mario.direction);
-		
+			s.draw(g);
+
+		}		
 	}
-	
 }

@@ -1,13 +1,10 @@
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.*;
 
-//25:03
 class Mario extends Sprite
 {
-    static int x;
     int px, py;
     double vert_vel;
     static BufferedImage[] images = null;
@@ -15,9 +12,6 @@ class Mario extends Sprite
     int marioScreenLocation;
     int frameCounter;
     static boolean direction = true;
-
-   
-
 
     public Mario()
     {
@@ -41,7 +35,7 @@ class Mario extends Sprite
 
     }
 
-    void update()
+    boolean update()
 	{
         if(vert_vel != 0.0) //if not standing on ground or brick start counting frames
         {
@@ -60,8 +54,22 @@ class Mario extends Sprite
 			vert_vel = 0.0;
 			y = 400; // snap back to the ground
 		}
-
+        return true;
 	}
+
+    void getOutOfTheObstacle(Sprite s)
+    {
+        if(this.x + this.w >= s.x && this.px + this.w <= s.x)
+            this.x = s.x - this.w;
+        if(this.x <= s.w + s.w && this.px >= s.x + s.w)
+            this.x = s.x +s.w;
+    }
+
+    void savePreviousCoords()
+    {
+        px = x;
+        py = y;
+    }
 
     @Override
     public String toString()
@@ -76,12 +84,13 @@ class Mario extends Sprite
             imageNum = 0; 
     }
 
-    void draw (Graphics g, boolean direction)
+    @Override
+    void draw (Graphics g)  //, boolean direction
     {
-        if(direction == true)   //facing right
-            g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation, y,null);
-        else if(direction == false) //facing left
-            g.drawImage(images[imageNum], x - Mario.x + marioScreenLocation + w, y, -w, h, null);
+        //if(direction == true)   //facing right
+            g.drawImage(images[imageNum], marioScreenLocation, y,null);
+        // else if(direction == false) //facing left
+        //     g.drawImage(images[imageNum], marioScreenLocation + w, y, -w, h, null);
 
     }
  

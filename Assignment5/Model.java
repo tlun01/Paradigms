@@ -4,6 +4,7 @@
 
 import java.util.ArrayList;
 import java.util.*;
+import java.util.Iterator;
 
 public class Model 
 {
@@ -23,10 +24,21 @@ public class Model
 
 	public void update()
 	{
-		for(int i = 0; i < sprites.size(); i++)
+		Iterator<Sprite> iter = sprites.iterator();
+		while(iter.hasNext())
 		{
-			sprites.get(i).update();
+			Sprite s = iter.next();
+			s.update();
+			if(s.isBrick())
+			{
+				if(mario.checkCollision(s))
+					mario.getOutOfTheObstacle(s);
+			}
 		}
+		// for(int i = 0; i < sprites.size(); i++)
+		// {
+		// 	sprites.get(i).update();
+		// }
 		//mario.update();
 		//checkCollisions();
 	}
@@ -67,38 +79,40 @@ public class Model
 	// 	}
 	// }
 
-	boolean marioIsColliding(Brick b)
-	{
-		//Mario Right < Brick Left
-		if(mario.x + mario.w < b.x)
-			return false;
-		//Mario Left > Brick Right
-		if(mario.x > b.x + b.w)
-			return false;
-		//Mario Top underneath Brick Base
-		if(mario.y > b.y + b.h)
-			return false;
-		//Mario Base over Brick Top
-		if(mario.y + mario.h < b.y)
-			return false;
+	// boolean marioIsColliding(Brick b)
+	// {
+	// 	//Mario Right < Brick Left
+	// 	if(mario.x + mario.w < b.x)
+	// 		return false;
+	// 	//Mario Left > Brick Right
+	// 	if(mario.x > b.x + b.w)
+	// 		return false;
+	// 	//Mario Top underneath Brick Base
+	// 	if(mario.y > b.y + b.h)
+	// 		return false;
+	// 	//Mario Base over Brick Top
+	// 	if(mario.y + mario.h < b.y)
+	// 		return false;
 
-		return true;
-	}
+	// 	return true;
+	// }
 	    // Marshals this object into a JSON DOM
     Json marshal()
     {
         Json ob = Json.newObject();
-
-        // Json tmpList = Json.newList();
-        // ob.add("bricks", tmpList);
-        // for(int i = 0; i < bricks.size(); i++)
-        //     tmpList.add(bricks.get(i).marshal());
+        Json tmpList = Json.newList();
+        ob.add("bricks", tmpList);
+        for(int i = 0; i < sprites.size(); i++)
+		{
+			Sprite s = sprites.get(i);
+			if(s.isBrick())
+				tmpList.add(((Brick)s).marshal());
+		}
         return ob;
     }
 
 	public void unmarshal(Json ob)
 	{
-       //bricks = new ArrayList<Brick>();
 	   sprites = new ArrayList<Sprite>();
 	   mario = new Mario();
 	   sprites.add(mario);
