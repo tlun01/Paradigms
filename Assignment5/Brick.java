@@ -7,7 +7,6 @@ public class Brick extends Sprite
     BufferedImage image = null;
     Model model;
 
-
     public Brick(int x1, int y1, Model m)
     {
         x = x1;

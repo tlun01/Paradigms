@@ -11,7 +11,6 @@ public class Model
 	//ArrayList<Brick> bricks;
 	Mario mario;
 	Coin coin;
-	CoinBrick coinBrick;
 	ArrayList<Sprite> sprites;
 
 	Model()
@@ -19,10 +18,8 @@ public class Model
 		sprites = new ArrayList<Sprite>();
 		mario = new Mario();
 		coin = new Coin();
-		coinBrick = new CoinBrick();
 		sprites.add(mario);
 		sprites.add(coin);
-		sprites.add(coinBrick);
 		Json j = Json.load("map.json");
 		unmarshal(j);
 		System.out.println("Map Loaded!");
@@ -41,7 +38,7 @@ public class Model
 			{
 				iter.remove();
 			}
-			if(s.isBrick())
+			if(s.isBrick() || s.isCoinBrick())
 			{
 				if(mario.checkCollision(s))
 				{
@@ -58,24 +55,28 @@ public class Model
     {
         Json ob = Json.newObject();
         Json tmpList = Json.newList();
+		Json tmpList1 = Json.newList();
         ob.add("bricks", tmpList);
+		ob.add("coinBricks", tmpList1);
         for(int i = 0; i < sprites.size(); i++)
 		{
 			Sprite s = sprites.get(i);
 			if(s.isBrick())
 				tmpList.add(((Brick)s).marshal());
+			if(s.isCoinBrick())
+				tmpList1.add(((CoinBrick)s).marshal());
 		}
+		
         return ob;
     }
 
 	public void unmarshal(Json ob)
 	{
-       Json tmpList = ob.get("bricks");
-       for(int i = 0; i < tmpList.size(); i++)
-           sprites.add(new Brick(tmpList.get(i), this));
-		
-		// Iterator<Brick> iter = bricks.iterator();
-		// while(iter.hasNext())
-		// 	System.out.println(iter.next() + "\n");
+    	Json tmpList = ob.get("bricks");
+    	for(int i = 0; i < tmpList.size(); i++)
+    		sprites.add(new Brick(tmpList.get(i), this));
+		tmpList = ob.get("coinBricks");
+		for(int i = 0; i < tmpList.size(); i++)
+			sprites.add(new CoinBrick(tmpList.get(i), this));
 	}
 }

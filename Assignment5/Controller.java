@@ -19,7 +19,9 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	View view;
 	Model model;
 	Brick brick;
+	CoinBrick coinBrick;
 	boolean edit = false;
+	boolean coinBrickDraw = false;
 	
 	Controller()
 	{
@@ -41,17 +43,30 @@ class Controller implements ActionListener, MouseListener, KeyListener
 	}
 	
 	public void mousePressed(MouseEvent e)
-	   {
+	{
 		if (edit)
-			brick = new Brick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY(), model);
-	   }
+		{
+			if(coinBrickDraw)
+				coinBrick = new CoinBrick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY(), model);	
+			else
+				brick = new Brick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY(), model);
+		}
+	}
 	
 	public void mouseReleased(MouseEvent e)
 	{
 		if(edit)
 		{
-			brick.endBrick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY());
-			model.sprites.add(brick);
+			if(coinBrickDraw)
+			{
+				coinBrick.endCoinBrick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY());
+				model.sprites.add(coinBrick);
+			}
+			else
+			{
+				brick.endBrick(e.getX() + model.mario.x - model.mario.marioScreenLocation, e.getY());
+				model.sprites.add(brick);
+			}
 		}
 	}
 	
@@ -103,6 +118,15 @@ class Controller implements ActionListener, MouseListener, KeyListener
 		{
 			edit = !edit;
 			System.out.println("Edit mode: " + edit);
+		}
+		//swap from brick to coin brick
+		if(c == 'c' || c == 'C')
+		{
+			if(edit)
+			{
+			coinBrickDraw = !coinBrickDraw;
+			System.out.println("Coin brick drawing mode: " + coinBrickDraw);
+			}
 		}
 	 }
 
