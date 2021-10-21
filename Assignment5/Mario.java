@@ -61,8 +61,8 @@ public class Mario extends Sprite
     {
         if(this.x + this.w >= s.x && this.px + this.w <= s.x) //collision with left side of brick
             this.x = s.x - this.w;
-        if(this.x <= s.w + s.w && this.px >= s.x + s.w) //collision with right side of brick     
-            this.x = s.x +s.w;
+        if(this.x <= s.x + s.w && this.px >= s.x + s.w) //collision with right side of brick     
+                this.x = s.x +s.w;
         if(this.y + this.h >= s.y && this.py + this.h <= s.y)   //collision with top of brick
             {
                 this.y = s.y - this.h;

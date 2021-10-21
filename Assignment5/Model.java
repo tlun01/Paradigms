@@ -11,6 +11,7 @@ public class Model
 	//ArrayList<Brick> bricks;
 	Mario mario;
 	Coin coin;
+	CoinBrick coinBrick;
 	ArrayList<Sprite> sprites;
 
 	Model()
@@ -18,8 +19,10 @@ public class Model
 		sprites = new ArrayList<Sprite>();
 		mario = new Mario();
 		coin = new Coin();
+		coinBrick = new CoinBrick();
 		sprites.add(mario);
 		sprites.add(coin);
+		sprites.add(coinBrick);
 		Json j = Json.load("map.json");
 		unmarshal(j);
 		System.out.println("Map Loaded!");
@@ -33,11 +36,11 @@ public class Model
 		while(iter.hasNext())
 		{
 			Sprite s = iter.next();
-			s.update();
-			// if(!s.update())
-			// {
-			// 	iter.remove();
-			// }
+			//s.update();
+			if(!s.update())
+			{
+				iter.remove();
+			}
 			if(s.isBrick())
 			{
 				if(mario.checkCollision(s))

@@ -22,13 +22,14 @@ public class Coin extends Sprite
         y += vert_vel;
         x += 5;
         vert_vel += 1.2;
-        return true;
+        if(this.y > 500)
+            return false;
+        else
+            return true;
     }
 
     void loadImage()
     {
-        System.out.println("loaded");
-
         if(image == null)
         {
             image = View.loadImage("coin.png");
