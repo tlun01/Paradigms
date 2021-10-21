@@ -10,36 +10,40 @@ public class Model
 {
 	//ArrayList<Brick> bricks;
 	Mario mario;
+	Coin coin;
 	ArrayList<Sprite> sprites;
 
 	Model()
 	{	
 		sprites = new ArrayList<Sprite>();
 		mario = new Mario();
+		coin = new Coin();
 		sprites.add(mario);
+		sprites.add(coin);
 		Json j = Json.load("map.json");
 		unmarshal(j);
 		System.out.println("Map Loaded!");
+		//System.out.println(sprites);
 	}
 
 	public void update()
 	{
-		ArrayList<Sprite> coins = new ArrayList<Sprite>();
+		//ArrayList<Sprite> coins = new ArrayList<Sprite>();
 		Iterator<Sprite> iter = sprites.iterator();
 		while(iter.hasNext())
 		{
 			Sprite s = iter.next();
 			s.update();
-			if(!s.update())
-			{
-				iter.remove();
-			}
-			else if(s.isBrick())
+			// if(!s.update())
+			// {
+			// 	iter.remove();
+			// }
+			if(s.isBrick())
 			{
 				if(mario.checkCollision(s))
 				{
 					mario.getOutOfTheObstacle(s);
-					//coins.add()
+					//coins.add();
 					//adding into an iterator is hard!
 				}
 			}
@@ -63,9 +67,6 @@ public class Model
 
 	public void unmarshal(Json ob)
 	{
-	   sprites = new ArrayList<Sprite>();
-	   mario = new Mario();
-	   sprites.add(mario);
        Json tmpList = ob.get("bricks");
        for(int i = 0; i < tmpList.size(); i++)
            sprites.add(new Brick(tmpList.get(i), this));

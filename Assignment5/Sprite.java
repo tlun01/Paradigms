@@ -18,6 +18,16 @@ abstract class Sprite
         return false;
     }
 
+    boolean isCoin()
+    {
+        return false;
+    }
+
+    boolean isCoinBrick()
+    {
+        return false;
+    }
+
     public boolean checkCollision(Sprite s)
     {
         if(this.x + this.w <= s.x)  //this right < sprite's left
@@ -28,7 +38,7 @@ abstract class Sprite
             return false;
         if(this.y + this.h <= s.y)   //this base over sprite's top
             return false;
-    //    System.out.println("collison");
+        //System.out.println("collison");
         return true;
     }
 }
