@@ -1,27 +1,6 @@
 <html>
 <head>
-    <script type = "text/javascript">
-        function helloWorld()
-        {
-            //alert("Hello!");
-            console.log("hello!");
-        }
-        function backgroundColor()
-        {
-            document.body.style.backgroundColor = "DarkSeaGreen";
-        }
 
-        let findrecipe = ()=>
-        {
-            alert("you've done it now :(")
-            helloWorld();
-            let i = 0;
-            console.log(i);
-            i = "taco";
-            console.log(i);
-            
-        }
-    </script>
 </head> 
 
 <body onload = "backgroundColor()">
@@ -37,30 +16,57 @@
     If you are unfamiliar with this game, you can see all the champions by clicking
     <a href ="https://www.leagueoflegends.com/en-us/champions/" target = "_blank">  here.</a>
     </p>
-    <center><img src="thresh.jpg"><img src="xerath.jpg"><img src="alistar.jpg"></center>
-    <!-- <div id="x"></div>
-    <script>
-        var img = document.createElement("img");
-        img.src = "thresh.jpg";
+    <h3>Question 1</h3>
+    <p>Which of these characters is also known as "The Chain Warden"?</p>
 
-        var div = document.getElementById("x");
-        div.appendChild(img);
-    </script> -->
-    
-    <!-- <div id="x1"></div>
-    <script>
-        var img1 = document.createElement("img1");
-        img.src = "xerath.jpg";
+    <center>
+        <img src="thresh.jpg" style="margin:0px 50px;" onclick = "answerT.update('answer1');">
+        <img src="xerath.jpg"style="margin:0px 50px;" onclick = "answerF.update('answer1');">
+        <img src="alistar.jpg"style="margin:0px 50px;" onclick = "answerF.update('answer1');">
 
-        var div = document.getElementById("x1");
-        div.appendChild(img1);
-        div.setAttribute("style", "text-align:center");
-    </script> -->
+    </center>
+<div id="answer1"></div>
+ 
+</br>
+<h3>Question 2</h3>
+<p>How many playable characters are there in League of Legends as of 11/9/2021?</p>
+<p onclick = "answerF.update('answer2');">(a) 203</p>
+<p onclick = "answerF.update('answer2');">(b) 126</p>
+<p onclick = "answerT.update('answer2');">(c) 157</p>
+<div id="answer2"></div>
+
+<h3>Question 3</h3>
+<p>Riot created a show on Netflix about Jinx and Vi's backstory, in which location is it based?</p>
+<p onclick = "answerF.update('answer3');">(a) Bilgewater</p>
+<p onclick = "answerT.update('answer3');">(b) Piltover & Zaun</p>
+<p onclick = "answerF.update('answer3');">(c) Ionia</p>
+<div id="answer3"></div>
+
+<form id = "resetButton">
+    <input type = "button" onclick = "location.reload()" value = "reset">
+</form>
 
 
-<!-- Push me! <br><br>
-<form id = "form1">
-    <input type = "button" onclick = "findrecipe();" value = "push me">
-</form> -->
+<script type = "text/javascript">
+    function backgroundColor()
+    {
+        document.body.style.backgroundColor = "DarkSeaGreen";
+    }
 
+    class answerReveal
+    {
+        constructor(answerIn)
+        {
+            this.answer = answerIn;
+        }
+
+        update(tag)
+        {
+            document.getElementById(tag).innerHTML = this.answer;
+        }
+    }
+
+    let answerT = new answerReveal("Correct");
+    let answerF = new answerReveal("Incorrect");
+</script>
 </body></html>
