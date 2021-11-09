@@ -12,6 +12,8 @@ public class Mario extends Sprite
     int marioScreenLocation;
     int frameCounter;
     static boolean direction = true;
+    CoinBrick coinBrick;
+    boolean iHitMyHead = false;
 
     public Mario()
     {
@@ -31,8 +33,6 @@ public class Mario extends Sprite
             images[3] = View.loadImage("mario4.png");
             images[4] = View.loadImage("mario5.png");
         }
-
-
     }
 
     boolean update()
@@ -57,23 +57,28 @@ public class Mario extends Sprite
         return true;
 	}
 
-    void getOutOfTheObstacle(Sprite s)
+    boolean getOutOfTheObstacle(Sprite s)
     {
-        if(this.x + this.w >= s.x && this.px + this.w <= s.x) //collision with left side of brick
+        if(this.x + this.w > s.x && this.px + this.w <= s.x) //collision with left side of brick
             this.x = s.x - this.w;
-        if(this.x <= s.x + s.w && this.px >= s.x + s.w) //collision with right side of brick     
+        if(this.x < s.x + s.w && this.px >= s.x + s.w) //collision with right side of brick     
                 this.x = s.x +s.w;
-        if(this.y + this.h >= s.y && this.py + this.h <= s.y)   //collision with top of brick
+        if(this.y + this.h > s.y && this.py + this.h <= s.y)   //collision with top of brick
             {
                 this.y = s.y - this.h;
                 vert_vel = 0.0;
             }
-        if(this.y <= s.y + s.h && this.py >= s.y + s.h) //collision with bottom of brick
+        if(this.y < s.y + s.h && this.py >= s.y + s.h) //collision with bottom of brick
             {
-                this.y = s.y + s.h;
-                frameCounter = 5;
-                vert_vel += 5.3;
+                this.y = s.y + s.h + 5;
+                frameCounter = 6;
+                vert_vel = 0.1;
+                if(s.isCoinBrick())
+                {
+                    return true;
+                }
             }
+        return false;
     }
 
     void savePreviousCoords()

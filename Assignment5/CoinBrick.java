@@ -5,34 +5,16 @@ public class CoinBrick extends Sprite
 {
     BufferedImage image = null;
     Model model;
-
-    // public CoinBrick()
-    // {
-    //     x = 50;
-    //     y = 50;
-    //     w = 50;
-    //     h = 50;
-    //     loadImage();
-    // }
+    Brick brick;
+    int coinCounter = 0;
 
     public CoinBrick(int x1, int y1, Model m)
     {
         x = x1;
         y = y1;
-        w = 10;
-        h = 10;
         loadImage();
         model = m;
-    }
-
-    public CoinBrick(int x1, int y1, int w1, int h1, Model m)
-    {
-        x = x1;
-        y = y1;
-        w = w1;
-        h = h1;
-        loadImage();
-        model = m;
+        coinCounter = 0;
     }
 
     public void endCoinBrick(int x2, int y2)
@@ -41,11 +23,12 @@ public class CoinBrick extends Sprite
         h = y2 - y;
 
         if(x2 < x)
-            x = x2;
+        x = x2;
         if(y2 < y)
-            y= y2;
-            
+        y = y2;
+
         loadImage();
+        coinCounter = 0;
     }
 
     public CoinBrick(Json ob, Model m) 
@@ -56,6 +39,7 @@ public class CoinBrick extends Sprite
         h = (int)ob.getLong("h");
         loadImage();
         model = m;
+        coinCounter = 0;
     }
 
     Json marshal()
@@ -66,12 +50,22 @@ public class CoinBrick extends Sprite
         ob.add("y", y);
         ob.add("w", w);
         ob.add("h", h);
+        coinCounter = 0;
         return ob;
     }
 
     boolean update()
     {
-        return true;
+        //System.out.println("coin counter working: " + coinCounter);
+        if(coinCounter >= 5)
+        {
+            // brick = new Brick(this.x + model.mario.x - model.mario.marioScreenLocation, this.y, model);
+            // brick.endBrick(this.w + model.mario.x - model.mario.marioScreenLocation, this.h);
+			// model.sprites.add(brick);
+            return false;
+        }
+        else
+            return true;
     }
     
     void loadImage()

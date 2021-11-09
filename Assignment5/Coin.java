@@ -7,21 +7,26 @@ public class Coin extends Sprite
     Model model;
     double vert_vel;
     BufferedImage image = null;
+    Random rand = new Random();
+    int upperbound = 20;
+    int int_random = rand.nextInt(upperbound);
 
-    public Coin()
+
+    public Coin(int x1, int y1, Model m)
     {
-        x = 50;
-        y = 50;
+        x = x1;
+        y = y1;
         vert_vel = -10.0;
         loadImage();
-
+        model = m;
     }
 
     public boolean update()
     {
         y += vert_vel;
-        x += 5;
+        x += (int_random - 10);
         vert_vel += 1.2;
+
         if(this.y > 500)
             return false;
         else
@@ -40,7 +45,7 @@ public class Coin extends Sprite
    
     void draw(Graphics g)
     {
-        g.drawImage(image, x, y, w, h, null);
+        g.drawImage(image, x - model.mario.x + model.mario.marioScreenLocation, y, w, h, null);
     }
 
     @Override

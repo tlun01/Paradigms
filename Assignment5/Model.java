@@ -10,16 +10,13 @@ public class Model
 {
 	//ArrayList<Brick> bricks;
 	Mario mario;
-	Coin coin;
 	ArrayList<Sprite> sprites;
 
 	Model()
 	{	
 		sprites = new ArrayList<Sprite>();
 		mario = new Mario();
-		coin = new Coin();
 		sprites.add(mario);
-		sprites.add(coin);
 		Json j = Json.load("map.json");
 		unmarshal(j);
 		System.out.println("Map Loaded!");
@@ -37,17 +34,22 @@ public class Model
 			if(!s.update())
 			{
 				iter.remove();
+				continue;
 			}
 			if(s.isBrick() || s.isCoinBrick())
 			{
 				if(mario.checkCollision(s))
-				{
-					mario.getOutOfTheObstacle(s);
-					//coins.add();
-					//adding into an iterator is hard!
+				{	
+					if(mario.getOutOfTheObstacle(s))
+					{
+						((CoinBrick)s).coinCounter++;
+						sprites.add(new Coin(s.x, s.y, this));
+						break;
+					}
 				}
 			}
 		}
+
 	}
 
 	    // Marshals this object into a JSON DOM
