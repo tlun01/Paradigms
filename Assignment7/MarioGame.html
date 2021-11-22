@@ -2,9 +2,214 @@
     <head>
         <title>Mario in JavaScript!</title>
     </head>
+    <body>
+    <br>
+    <canvas id = "myCanvas" width = "1000" height = "500" style = "border:1px solid #cccccc;"></canvas>
+<script type = "text/javascript">
+    class Sprite
+    {
+        constructor(x1, y1, w1, image_url)
+        {
+            this.x = x1;
+            this.y = y1;
+            this.w = w1;
+            this.flip = false;
+            this.image = new Image();
+            this.image.src = image_url;
+        }
 
+        move(dx, dy)
+        {
+            this.dest_x = this.x + dx;
+            this.dest_y = this.y + dy;
+        }
+    }
 
+    class Brick extends Sprite
+    {
+        constructor(x, y, w, image_url)
+        {
+            super(x, y, w, image_url);
+        }
 
+        update(){} //no move
+
+        onclick(x,y){} //still no move
+    }
+
+    class Mario extends Sprite
+    {
+        constructor(x, y, w, image_url)
+        {
+            super(x, y, w, image_url);
+            this.flip = true;
+        }
+
+        update()
+        {
+            // if(this.dest_x === undefined)
+            //     return;
+
+            // if(this.x < this.dest.x)
+            //     this.x += 10;
+            // else if(this.x> this.dest_x)
+            //     this.x -= 10;
+            // if(this.y < this.dest_y)
+            //     this.y += 10;
+            // else if(this.y > this.dest_y)
+            //     this.y -= 10;
+            
+        }
+
+        onclick(x, y)
+        {
+            this.dest_x = x;
+            this.dest_y = y;
+        }
+    }
+
+    class Model
+    {
+        constructor()
+        {
+            this.sprites = [];
+            this.mario = new Mario(50, 61, 95, "mario1.png");
+            this.sprites.push(this.mario);
+        }
+
+        update()
+        {
+            for(let i = 0; i < this.sprites.length; i++)
+            {
+                this.sprites[i].update();
+            }
+        }
+
+        onclick(x, y)
+        {
+            for(let i = 0; i < this.sprites.length; i++)
+            {
+                this.sprites[i].onclick(x, y);
+            }
+        }
+
+        move(dx, dy)
+        {
+            this.mario.move(dx, dy);
+        }
+    }
+
+    class View
+    {
+        constructor(model)
+        {
+            this.model = model;
+            this.canvas = document.getElementById("myCanvas");
+            this.mario = new Image();
+            this.mario.src = "mario1.png";
+        }
+
+        update()
+        {
+            let ctx = this.canvas.getContext("2d");
+            ctx.clearRect(0, 0, 1000, 500);
+            for(let i = 0; i <his.model.sprites.length; i++)
+            {
+                let sprite = this.model.sprites[i];
+            
+
+            if(sprite.flip)
+            {
+                ctx.save();
+                ctx.translate(sprite.x + sprite.w, 0);
+                ctx.scale.drawImage(sprite.image, 0, sprite.y);
+                ctx.restore();
+            }
+            else
+                ctx.drawImage(sprite.image, sprite.x, sprite.y);
+            }
+        }
+    }
+
+    class Game
+    {
+        constructor()
+        {
+            this.model = new Model();
+            this.view = new View(this.model);
+            this.controller = new Controller(this.model, this.view);
+        }
+
+        onTimer()
+        {
+            this.controller.update();
+            this.model.update();
+            this.view.update();
+        }
+    }
+
+    class Controller
+    {
+        constructor(model, view)
+        {
+            this.model = model;
+            this.view = view;
+            this.key_right = false;
+            this.key_left = false;
+            this.key_up = false;
+            this.key_down = false;
+            let self = this;
+            view.canvas.addEventListener('keydown', function(event) { self.onClick(event);}, false);
+            document.addEventListener('keyup', function(event) { self.keyUp(event);}, false);
+        }
+
+        onClick(event)
+        {
+         this.model.onclick(event.pageX - this.view.canvas.offsetLeft, event.pageY - this.view.canvas.offsetTop);   
+        }
+
+        keyDown(event)
+        {
+            if(event.keyCode == 39) this.key_right = true;
+            else if(event.keyCode == 37) this.key_left = true;
+            else if(event.keyCode == 38) this.key_up = true;
+            else if(event.keyCode == 40) this.key_down = true;
+        }
+
+        keyUp(event)
+        {
+            if(event.keyCode == 39) this.key_right = false;
+            else if(event.keyCode == 37) this.key_left = false;
+            else if(event.keyCode == 38) this.key_up = false;
+            else if(event.keyCode == 40) this.key_down = false;
+        }
+
+        update()
+        {
+            let dx = 0;
+            let dy = 0;
+            if(this.key_right)
+            {
+                dx+=10;
+                this.model.mario.flip = false;
+            }
+            if(this.key_left)
+            {
+                dx-=10;
+                this.model.model.flip = true;
+            }
+            if(this.key_up) dy-=10;
+            if(this.key_down) dy+=10;
+            if(dx != 0 || dy !=0)
+                this.model.move(dx, dy);
+        }
+    }
+
+let game = new Game();
+let timer = setInterval(function() {game.onTimer()}, 40);
+</script>
+
+</body>
 
     
 </html>
