@@ -8,64 +8,108 @@
 <script type = "text/javascript">
     class Sprite
     {
-        constructor(x1, y1, w1, image_url)
+        constructor(x1, y1, w1, h1, image_url)
         {
             this.x = x1;
             this.y = y1;
             this.w = w1;
+            this.h = h1;
             this.flip = false;
             this.image = new Image();
             this.image.src = image_url;
         }
 
-        move(dx, dy)
+        checkCollision(s)
         {
-            this.dest_x = this.x + dx;
-            this.dest_y = this.y + dy;
+            if(this.x + this.w <= this.s.x)  //this right < sprite's left
+                return false;
+		    if(this.x >= this.s.x + this.s.w)  //this left > sprite's right
+                return false;
+            if(this.y >= this.s.y + this.s.h)  //this top underneath sprite base
+                return false;
+            if(this.y + this.h <= this.s.y)   //this base over sprite's top
+                return false;
+            //System.out.println("collison");
+            return true;
         }
+
     }
 
     class Brick extends Sprite
     {
-        constructor(x, y, w, image_url)
+        constructor(x, y, w, h, image_url)
         {
-            super(x, y, w, image_url);
+            super(x, y, w, h, image_url);
         }
 
         update(){} //no move
 
-        onclick(x,y){} //still no move
     }
 
     class Mario extends Sprite
     {
-        constructor(x, y, w, image_url)
+        constructor(x, y, w, h, image_url)
         {
-            super(x, y, w, image_url);
+            super(x, y, w, h, image_url);
             this.flip = true;
         }
 
         update()
         {
-            // if(this.dest_x === undefined)
-            //     return;
+            if(this.dest_x === undefined)
+                return;
 
-            // if(this.x < this.dest.x)
-            //     this.x += 10;
-            // else if(this.x> this.dest_x)
-            //     this.x -= 10;
-            // if(this.y < this.dest_y)
-            //     this.y += 10;
-            // else if(this.y > this.dest_y)
-            //     this.y -= 10;
-            
+            if(this.x < this.dest.x)
+                this.x += 10;
+            else if(this.x> this.dest_x)
+                this.x -= 10;
+            if(this.y < this.dest_y)
+                this.y += 10;
+            else if(this.y > this.dest_y)
+                this.y -= 10;
+        //     if(this.vert_vel != 0.0) //if not standing on ground or brick start counting frames
+        //     {
+        //         this.frameCounter++;
+        //     }
+        //     else    //once landed set frames back to zero
+        //     {
+        //         this.frameCounter = 0;
+        //     }
+
+        //     this.vert_vel += 1.2;
+        //     this.y += this.vert_vel;
+
+        //     if(this.y > 400)
+        //     {
+        //         this.vert_vel = 0.0;
+        //         this.y = 400; // snap back to the ground
+        //     }
+        //     return true;
         }
 
-        onclick(x, y)
-        {
-            this.dest_x = x;
-            this.dest_y = y;
-        }
+        // getOutOfTheObstacle(s)
+        // {
+        //     if(this.x + this.w > s.x && this.px + this.w <= this.s.x) //collision with left side of brick
+        //         this.x = this.s.x - this.w;
+        //     if(this.x < this.s.x + this.s.w && this.px >= this.s.x + this.s.w) //collision with right side of brick     
+        //             this.x = this.s.x + this.s.w;
+        //     if(this.y + this.h > this.s.y && this.py + this.h <= this.s.y)   //collision with top of brick
+        //         {
+        //             this.y = s.y - this.h;
+        //             this.vert_vel = 0.0;
+        //         }
+        //     if(this.y < this.s.y + this.s.h && this.py >= this.s.y + this.s.h) //collision with bottom of brick
+        //         {
+        //             this.y = this.s.y + this.s.h + 5;
+        //             this.frameCounter = 6;
+        //             this.vert_vel = 0.1;
+        //             if(this.s.isCoinBrick())
+        //             {
+        //                 return true;
+        //             }
+        //     }
+        // return false;
+        // }
     }
 
     class Model
@@ -73,7 +117,9 @@
         constructor()
         {
             this.sprites = [];
-            this.mario = new Mario(50, 61, 95, "mario1.png");
+            this.brick = new Brick( 50, 50, 50, 50, "brick.png");
+            this.sprites.push(this.brick);
+            this.mario = new Mario(1, 1, 1, 1, "mario1.png");
             this.sprites.push(this.mario);
         }
 
@@ -107,25 +153,25 @@
             this.canvas = document.getElementById("myCanvas");
             this.mario = new Image();
             this.mario.src = "mario1.png";
+            this.brick = new Image();
+            this.brick.src = "brick.png";
         }
 
         update()
         {
             let ctx = this.canvas.getContext("2d");
             ctx.clearRect(0, 0, 1000, 500);
-            for(let i = 0; i <his.model.sprites.length; i++)
+            for(let i = 0; i <this.model.sprites.length; i++)
             {
                 let sprite = this.model.sprites[i];
-            
-
-            if(sprite.flip)
-            {
-                ctx.save();
-                ctx.translate(sprite.x + sprite.w, 0);
-                ctx.scale.drawImage(sprite.image, 0, sprite.y);
-                ctx.restore();
-            }
-            else
+            // if(sprite.flip)
+            // {
+            //     ctx.save();
+            //     ctx.translate(sprite.x + sprite.w, 0);
+            //     ctx.drawImage(sprite.image, 0, sprite.y);
+            //     ctx.restore();
+            // }
+            // else
                 ctx.drawImage(sprite.image, sprite.x, sprite.y);
             }
         }
@@ -196,7 +242,7 @@
             if(this.key_left)
             {
                 dx-=10;
-                this.model.model.flip = true;
+                this.model.mario.flip = true;
             }
             if(this.key_up) dy-=10;
             if(this.key_down) dy+=10;
