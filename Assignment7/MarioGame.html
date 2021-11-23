@@ -29,7 +29,6 @@
                 return false;
             if(this.y + this.h <= s.y)   //this base over sprite's top
                 return false;
-            //System.out.println("collison");
             return true;
         }
 
@@ -45,7 +44,7 @@
             super(x, y, w, h, image_url);
         }
 
-        update(){} //no move
+        update(){return true;} //no move
 
         isBrick(){return true;}
 
@@ -79,15 +78,16 @@
         {
             super(x, y, w, h, image_url);
             this.vert_vel = -10.0;
+            this.num = Math.random() * (10- 2) + 2;
         }
 
         update()
         {
             this.y += this.vert_vel;
-            this.x += (5);
+            this.x += this.num;
             this.vert_vel += 1.2;
 
-            if(this.y > 500)
+            if(this.y > 400)
                 return false;
             else
                 return true;
@@ -104,17 +104,29 @@
             this.vert_vel = 0.0;
 
             this.screenLocation = 150;
-
+            this.imageNum = 0;
+            
             this.py = 0;
             this.px = 0;
 
-            this.images = [];
-            this.images.push("mario1");
-            this.images.push("mario2");
-            this.images.push("mario3");
-            this.images.push("mario4");
-            this.images.push("mario5");
+            this.marioImage1 = new Image();
+            this.marioImage1.src = "mario1.png";
+            this.marioImage2 = new Image();
+            this.marioImage2.src = "mario2.png";
+            this.marioImage3 = new Image();
+            this.marioImage3.src = "mario3.png";
+            this.marioImage4 = new Image();
+            this.marioImage4.src = "mario4.png";
+            this.marioImage5 = new Image();
+            this.marioImage5.src = "mario5.png";
 
+            this.marioImages = [];
+            this.marioImages.push(this.marioImage1);
+            this.marioImages.push(this.marioImage2);
+            this.marioImages.push(this.marioImage3);
+            this.marioImages.push(this.marioImage4);
+            this.marioImages.push(this.marioImage5);
+            // this.image = this.marioImage3
         }
 
         update()
@@ -132,10 +144,10 @@
             this.vert_vel += 1.2;
             this.y += this.vert_vel;
 
-            if(this.y > 400)
+            if(this.y > 350)
             {
                 this.vert_vel = 0.0;
-                this.y = 400; // snap back to the ground
+                this.y = 350; // snap back to the ground
             }
 
             return true;
@@ -152,6 +164,7 @@
                 {
                     this.y = s.y - this.h;
                     this.vert_vel = 0.0;
+                    console.log(this.frameCounter);
                 }
             if(this.y <= s.y + s.h && this.py >= s.y + s.h) //collision with bottom of brick
                 {
@@ -177,13 +190,12 @@
         }
 
         updateImageNum()
-        {
-            let imageNum = 0;
-            
+        {          
             this.imageNum++;
             if(this.imageNum > 4)
-                imageNum = 0;
+                this.imageNum = 0;
             
+            this.image = this.marioImages[this.imageNum]
 
         }
     }
@@ -194,32 +206,34 @@
         constructor()
         {
             this.sprites = [];
-            this.brick = new Brick(50, 50, 50, 50, "brick.png");
+            this.brick = new Brick(400, 100, 50, 50, "brick.png");
             this.sprites.push(this.brick);
             this.brick1 = new Brick(100, 100, 50, 50, "brick.png");
             this.sprites.push(this.brick1);
             this.brick2 = new Brick(200, 200, 50, 50, "brick.png");
             this.sprites.push(this.brick2);
-            this.brick3 = new Brick(250, 300, 50, 50, "brick.png");
+            this.brick3 = new Brick(250, 250, 50, 50, "brick.png");
             this.sprites.push(this.brick3);
-            this.brick4 = new Brick(400, 450, 50, 50, "brick.png");
+            this.brick4 = new Brick(400, 400, 50, 50, "brick.png");
             this.sprites.push(this.brick4);
-            this.brick5 = new Brick(50, 300, 49, 49, "brick.png");
-            this.sprites.push(this.brick5);
-            this.coinBrick = new CoinBrick(50, 300, 51, 51, "coinBrick.png");
+            // this.brick5 = new Brick(50, 250, 49, 49, "brick.png");
+            // this.sprites.push(this.brick5);
+            this.coinBrick = new CoinBrick(50, 250, 51, 51, "coinBrick.png");
             this.sprites.push(this.coinBrick);
-            this.mario = new Mario(0, 450, 60, 95, "mario1.png");
+            this.mario = new Mario(0, 350, 60, 95, "mario1.png");
             this.sprites.push(this.mario);
-            this.coin = new Coin(50, 300, 50, 50, "coin.png");
-            this.sprites.push(this.coin);
+
         }
 
         update()
         {
             for(let i = 0; i < this.sprites.length; i++)
             {
-                this.sprites[i].update();
-
+                if(!this.sprites[i].update())
+                {
+                    this.sprites.splice(i,1);
+                    break;
+                }
                 if(this.sprites[i].isBrick() || this.sprites[i].isCoinBrick())
                 {
                     if(this.mario.checkCollision(this.sprites[i]))
@@ -229,10 +243,15 @@
                             console.log(this.coinBrick.coinCounter);
                             if(this.coinBrick.coinCounter >= 4)
                             {
+                                this.tempBrick = new Brick(this.sprites[i].x, this.sprites[i].y, this.sprites[i].w, this.sprites[i].h, "brick.png");
+                                this.sprites.push(this.tempBrick);
                                 this.sprites.splice(i, 1);
+
                             }
                             else
                             {
+                                this.coin = new Coin(50, 250, 50, 50, "coin.png");
+                                this.sprites.push(this.coin);
                                 this.coinBrick.coinCounter++;
                             }
                         }
@@ -248,6 +267,11 @@
         constructor(model)
         {
             this.model = model;
+            this.backgroundLocation = 0;
+            this.ground = new Image();
+            this.ground.src = "floor.png";
+            this.background = new Image();
+            this.background.src = "cloudbackground.jpg";
             this.canvas = document.getElementById("myCanvas");
         }
 
@@ -255,6 +279,9 @@
         {
             let ctx = this.canvas.getContext("2d");
             ctx.clearRect(0, 0, 1000, 500);
+            ctx.drawImage(this.background, 0 + this.backgroundLocation, 0, 1500, 500);
+            ctx.drawImage(this.ground, 0 + this.backgroundLocation, 396, 1500, 500);
+            
             for(let i = 0; i <this.model.sprites.length; i++)
             {
                 let sprite = this.model.sprites[i];
@@ -269,6 +296,7 @@
             else
                 ctx.drawImage(sprite.image, sprite.x - this.model.mario.x + this.model.mario.screenLocation, sprite.y, sprite.w, sprite.h);
             }
+
         }
     }
 
@@ -329,7 +357,7 @@
             {
                 this.model.mario.flip = false;
                 this.model.mario.x += 5;
-                // this.view.backgroundLocation += 2;
+                this.view.backgroundLocation -= 2;
                 this.model.mario.updateImageNum();
             }
             if(this.key_left)
@@ -337,7 +365,7 @@
                 this.model.mario.flip = true;
                 this.model.mario.x -= 5;
                 this.model.mario.updateImageNum();
-                // view.backgroundLocation -= 2;
+                this.view.backgroundLocation += 2;
             }
             //if(keyDown);
             if(this.key_up)
