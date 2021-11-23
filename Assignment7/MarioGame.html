@@ -77,8 +77,8 @@
         constructor(x, y, w, h, image_url)
         {
             super(x, y, w, h, image_url);
-            this.vert_vel = -10.0;
-            this.num = Math.random() * (10- 2) + 2;
+            this.vert_vel =- 10.0;
+            this.num = Math.random() * (15 - 0) + (-10);
         }
 
         update()
@@ -126,7 +126,6 @@
             this.marioImages.push(this.marioImage3);
             this.marioImages.push(this.marioImage4);
             this.marioImages.push(this.marioImage5);
-            // this.image = this.marioImage3
         }
 
         update()
@@ -159,23 +158,21 @@
                     this.x = s.x - this.w;
             if(this.x < s.x + s.w && this.px >= s.x + s.w) //collision with right side of brick     
                     this.x = s.x + s.w;
-
             if(this.y + this.h >= s.y && this.py + this.h <= s.y)   //collision with top of brick
-                {
-                    this.y = s.y - this.h;
-                    this.vert_vel = 0.0;
-                    console.log(this.frameCounter);
-                }
+            {
+                this.y = s.y - this.h;
+                this.vert_vel = 0.0;
+            }
             if(this.y <= s.y + s.h && this.py >= s.y + s.h) //collision with bottom of brick
+            {
+                this.y = s.y + s.h + 1;
+                this.frameCounter = 6;
+                this.vert_vel = 0.1;
+                if(s.isCoinBrick())
                 {
-                    this.y = s.y + s.h + 1;
-                    this.frameCounter = 6;
-                    this.vert_vel = 0.1;
-                    if(s.isCoinBrick())
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+            }
                 return false;
         }
 
@@ -206,23 +203,22 @@
         constructor()
         {
             this.sprites = [];
+            this.mario = new Mario(0, 350, 60, 95, "mario1.png");
+            this.sprites.push(this.mario);
             this.brick = new Brick(400, 100, 50, 50, "brick.png");
             this.sprites.push(this.brick);
-            this.brick1 = new Brick(100, 100, 50, 50, "brick.png");
-            this.sprites.push(this.brick1);
+            this.brick = new Brick(600, 225, 50, 50, "brick.png");
+            this.sprites.push(this.brick);
             this.brick2 = new Brick(200, 200, 50, 50, "brick.png");
             this.sprites.push(this.brick2);
             this.brick3 = new Brick(250, 250, 50, 50, "brick.png");
             this.sprites.push(this.brick3);
             this.brick4 = new Brick(400, 400, 50, 50, "brick.png");
             this.sprites.push(this.brick4);
-            // this.brick5 = new Brick(50, 250, 49, 49, "brick.png");
-            // this.sprites.push(this.brick5);
-            this.coinBrick = new CoinBrick(50, 250, 51, 51, "coinBrick.png");
+            this.coinBrick = new CoinBrick(25, 250, 50, 50, "coinBrick.png");
             this.sprites.push(this.coinBrick);
-            this.mario = new Mario(0, 350, 60, 95, "mario1.png");
-            this.sprites.push(this.mario);
-
+            this.coinBrick1 = new CoinBrick(100, 100, 50, 50, "coinBrick.png");
+            this.sprites.push(this.coinBrick1);
         }
 
         update()
@@ -238,21 +234,18 @@
                 {
                     if(this.mario.checkCollision(this.sprites[i]))
                     {
+
                         if(this.mario.getOutOfTheObstacle(this.sprites[i]))
                         {
-                            console.log(this.coinBrick.coinCounter);
-                            if(this.coinBrick.coinCounter >= 4)
+                            this.coin = new Coin(this.sprites[i].x, this.sprites[i].y, this.sprites[i].w, this.sprites[i].h, "coin.png");
+                            this.sprites.push(this.coin);
+                            this.sprites[i].coinCounter++;
+                            if(this.sprites[i].coinCounter >= 5)
                             {
                                 this.tempBrick = new Brick(this.sprites[i].x, this.sprites[i].y, this.sprites[i].w, this.sprites[i].h, "brick.png");
                                 this.sprites.push(this.tempBrick);
                                 this.sprites.splice(i, 1);
 
-                            }
-                            else
-                            {
-                                this.coin = new Coin(50, 250, 50, 50, "coin.png");
-                                this.sprites.push(this.coin);
-                                this.coinBrick.coinCounter++;
                             }
                         }
                     }
@@ -279,8 +272,8 @@
         {
             let ctx = this.canvas.getContext("2d");
             ctx.clearRect(0, 0, 1000, 500);
-            ctx.drawImage(this.background, 0 + this.backgroundLocation, 0, 1500, 500);
-            ctx.drawImage(this.ground, 0 + this.backgroundLocation, 396, 1500, 500);
+            ctx.drawImage(this.background, -100 + this.backgroundLocation, 0, 1500, 500);
+            ctx.drawImage(this.ground, -100 + this.backgroundLocation, 396, 1500, 500);
             
             for(let i = 0; i <this.model.sprites.length; i++)
             {
@@ -329,6 +322,7 @@
             this.key_left = false;
             this.key_up = false;
             this.key_down = false;
+            this.space = false;
             let self = this;
             document.addEventListener('keydown', function(event) { self.keyPressed(event);}, false);
             document.addEventListener('keyup', function(event) { self.keyReleased(event);}, false);
@@ -340,6 +334,7 @@
             else if(event.keyCode == 37) this.key_left = true;
             else if(event.keyCode == 38) this.key_up = true;
             else if(event.keyCode == 40) this.key_down = true;
+            else if(event.keyCode == 32) this.space = true;
         }
 
         keyReleased(event)
@@ -348,6 +343,7 @@
             else if(event.keyCode == 37) this.key_left = false;
             else if(event.keyCode == 38) this.key_up = false;
             else if(event.keyCode == 40) this.key_down = false;
+            else if(event.keyCode == 32) this.space = false;
         }
 
         update()
@@ -367,14 +363,12 @@
                 this.model.mario.updateImageNum();
                 this.view.backgroundLocation += 2;
             }
-            //if(keyDown);
-            if(this.key_up)
+            if(this.key_up || this.space)
             {
-                this.model.mario.y-=2;
                 if(this.model.mario.frameCounter < 5)
                     this.model.mario.vert_vel -= 5.3;
             } 
-            }
+        }
     }
 
 let game = new Game();
