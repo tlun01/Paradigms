@@ -21,19 +21,22 @@
 
         checkCollision(s)
         {
-            if(this.x + this.w <= this.s.x)  //this right < sprite's left
+            if(this.x + this.w <= s.x)  //this right < sprite's left
                 return false;
-		    if(this.x >= this.s.x + this.s.w)  //this left > sprite's right
+		    if(this.x >= s.x + s.w)  //this left > sprite's right
                 return false;
-            if(this.y >= this.s.y + this.s.h)  //this top underneath sprite base
+            if(this.y >= s.y + s.h)  //this top underneath sprite base
                 return false;
-            if(this.y + this.h <= this.s.y)   //this base over sprite's top
+            if(this.y + this.h <= s.y)   //this base over sprite's top
                 return false;
             //System.out.println("collison");
             return true;
         }
 
+        isBrick(){return false;}
+        isCoinBrick(){return false;}
     }
+
 
     class Brick extends Sprite
     {
@@ -44,83 +47,166 @@
 
         update(){} //no move
 
+        isBrick(){return true;}
+
     }
+
+
+    class CoinBrick extends Sprite
+    {
+        constructor(x, y, w, h, image_url)
+        {
+            super(x, y, w, h, image_url);
+            this.coinCounter = 0;
+        }
+        
+        update()
+        {
+            if(this.coinCounter >= 5)
+                return false;
+            else
+                return true;
+        }
+
+        isCoinBrick(){return true;}
+    
+    }
+
+
+    class Coin extends Sprite
+    {
+        constructor(x, y, w, h, image_url)
+        {
+            super(x, y, w, h, image_url);
+            vert_vel = -10.0;
+        }
+
+        update()
+        {
+            y += vert_vel;
+            x += (5);
+            vert_vel += 1.2;
+
+            if(this.y > 500)
+                return false;
+            else
+                return true;
+        }
+    }
+
 
     class Mario extends Sprite
     {
         constructor(x, y, w, h, image_url)
         {
             super(x, y, w, h, image_url);
-            this.flip = true;
+            this.flip = false;
+            this.vert_vel = 0.0;
+
+            this.py = 0;
+            this.px = 0;
+
+            this.images = [];
+            this.images.push("mario1");
+            this.images.push("mario2");
+            this.images.push("mario3");
+            this.images.push("mario4");
+            this.images.push("mario5");
+
         }
 
         update()
         {
-            if(this.dest_x === undefined)
-                return;
+            if(this.vert_vel != 0.0) //if not standing on ground or brick start counting frames
+            {
+                this.frameCounter++;
+            }
+            else    //once landed set frames back to zero
+            {
+                this.frameCounter = 0;
+            }
 
-            if(this.x < this.dest.x)
-                this.x += 10;
-            else if(this.x> this.dest_x)
-                this.x -= 10;
-            if(this.y < this.dest_y)
-                this.y += 10;
-            else if(this.y > this.dest_y)
-                this.y -= 10;
-        //     if(this.vert_vel != 0.0) //if not standing on ground or brick start counting frames
-        //     {
-        //         this.frameCounter++;
-        //     }
-        //     else    //once landed set frames back to zero
-        //     {
-        //         this.frameCounter = 0;
-        //     }
+            this.savePrevY()
+            this.vert_vel += 1.2;
+            this.y += this.vert_vel;
 
-        //     this.vert_vel += 1.2;
-        //     this.y += this.vert_vel;
+            if(this.y > 400)
+            {
+                this.vert_vel = 0.0;
+                this.y = 400; // snap back to the ground
+            }
 
-        //     if(this.y > 400)
-        //     {
-        //         this.vert_vel = 0.0;
-        //         this.y = 400; // snap back to the ground
-        //     }
-        //     return true;
+            return true;
         }
 
-        // getOutOfTheObstacle(s)
-        // {
-        //     if(this.x + this.w > s.x && this.px + this.w <= this.s.x) //collision with left side of brick
-        //         this.x = this.s.x - this.w;
-        //     if(this.x < this.s.x + this.s.w && this.px >= this.s.x + this.s.w) //collision with right side of brick     
-        //             this.x = this.s.x + this.s.w;
-        //     if(this.y + this.h > this.s.y && this.py + this.h <= this.s.y)   //collision with top of brick
-        //         {
-        //             this.y = s.y - this.h;
-        //             this.vert_vel = 0.0;
-        //         }
-        //     if(this.y < this.s.y + this.s.h && this.py >= this.s.y + this.s.h) //collision with bottom of brick
-        //         {
-        //             this.y = this.s.y + this.s.h + 5;
-        //             this.frameCounter = 6;
-        //             this.vert_vel = 0.1;
-        //             if(this.s.isCoinBrick())
-        //             {
-        //                 return true;
-        //             }
-        //     }
-        // return false;
-        // }
+        getOutOfTheObstacle(s)
+        {
+            if(this.x + this.w > s.x && this.px + this.w <= s.x) //collision with left side of brick
+                    this.x = s.x - this.w;
+            if(this.x < s.x + s.w && this.px >= s.x + s.w) //collision with right side of brick     
+                    this.x = s.x + s.w;
+
+            if(this.y + this.h >= s.y && this.py + this.h <= s.y)   //collision with top of brick
+                {
+                    this.y = s.y - this.h;
+                    this.vert_vel = 0.0;
+                }
+            if(this.y <= s.y + s.h && this.py >= s.y + s.h) //collision with bottom of brick
+                {
+                    this.y = s.y + s.h + 1;
+                    this.frameCounter = 6;
+                    this.vert_vel = 0.1;
+                    if(s.isCoinBrick())
+                    {
+                        return true;  
+                    }
+                }
+        return false;
+        }
+
+        savePrevX()
+        {
+            this.px = this.x;
+        }
+        
+        savePrevY()
+        {
+            this.py = this.y;
+        }
+
+        updateImageNum()
+        {
+            let imageNum = 0;
+            
+            this.imageNum++;
+            if(this.imageNum > 4)
+                imageNum = 0;
+            
+
+        }
     }
+
 
     class Model
     {
         constructor()
         {
             this.sprites = [];
-            this.brick = new Brick( 50, 50, 50, 50, "brick.png");
+            this.brick = new Brick(50, 50, 50, 50, "brick.png");
             this.sprites.push(this.brick);
-            this.mario = new Mario(1, 1, 1, 1, "mario1.png");
+            this.brick1 = new Brick(100, 100, 50, 50, "brick.png");
+            this.sprites.push(this.brick1);
+            this.brick2 = new Brick(200, 200, 50, 50, "brick.png");
+            this.sprites.push(this.brick2);
+            this.brick3 = new Brick(250, 300, 50, 50, "brick.png");
+            this.sprites.push(this.brick3);
+            this.brick4 = new Brick(400, 450, 50, 50, "brick.png");
+            this.sprites.push(this.brick4);
+            this.coinBrick = new CoinBrick(500, 300, 50, 50, "coinBrick.png");
+            this.sprites.push(this.coinBrick);
+            this.mario = new Mario(10, 300, 60, 95, "mario1.png");
             this.sprites.push(this.mario);
+
         }
 
         update()
@@ -128,22 +214,21 @@
             for(let i = 0; i < this.sprites.length; i++)
             {
                 this.sprites[i].update();
-            }
-        }
 
-        onclick(x, y)
-        {
-            for(let i = 0; i < this.sprites.length; i++)
-            {
-                this.sprites[i].onclick(x, y);
+                if(this.sprites[i].isBrick() || this.sprites[i].isCoinBrick())
+                {
+                    if(this.mario.checkCollision(this.sprites[i]))
+                    {
+                        if(this.mario.getOutOfTheObstacle(this.sprites[i]))
+                        {
+                            console.log("frank0");
+                        }
+                    }
+                }
             }
-        }
-
-        move(dx, dy)
-        {
-            this.mario.move(dx, dy);
         }
     }
+
 
     class View
     {
@@ -151,10 +236,11 @@
         {
             this.model = model;
             this.canvas = document.getElementById("myCanvas");
-            this.mario = new Image();
-            this.mario.src = "mario1.png";
-            this.brick = new Image();
-            this.brick.src = "brick.png";
+            // this.mario = new Image();
+            // this.mario.src = "mario1.png";
+            // this.brick = new Image();
+            // this.brick.src = "brick.png";
+
         }
 
         update()
@@ -164,18 +250,20 @@
             for(let i = 0; i <this.model.sprites.length; i++)
             {
                 let sprite = this.model.sprites[i];
-            // if(sprite.flip)
-            // {
-            //     ctx.save();
-            //     ctx.translate(sprite.x + sprite.w, 0);
-            //     ctx.drawImage(sprite.image, 0, sprite.y);
-            //     ctx.restore();
-            // }
-            // else
-                ctx.drawImage(sprite.image, sprite.x, sprite.y);
+            if(sprite.flip)
+            {
+                ctx.save();
+                ctx.translate(sprite.x + sprite.w, 0);
+                ctx.scale(-1,1);
+                ctx.drawImage(sprite.image, 0, sprite.y, sprite.w, sprite.h);
+                ctx.restore();
+            }
+            else
+                ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h);
             }
         }
     }
+
 
     class Game
     {
@@ -194,6 +282,7 @@
         }
     }
 
+
     class Controller
     {
         constructor(model, view)
@@ -205,16 +294,11 @@
             this.key_up = false;
             this.key_down = false;
             let self = this;
-            view.canvas.addEventListener('keydown', function(event) { self.onClick(event);}, false);
-            document.addEventListener('keyup', function(event) { self.keyUp(event);}, false);
+            document.addEventListener('keydown', function(event) { self.keyPressed(event);}, false);
+            document.addEventListener('keyup', function(event) { self.keyReleased(event);}, false);
         }
 
-        onClick(event)
-        {
-         this.model.onclick(event.pageX - this.view.canvas.offsetLeft, event.pageY - this.view.canvas.offsetTop);   
-        }
-
-        keyDown(event)
+        keyPressed(event)
         {
             if(event.keyCode == 39) this.key_right = true;
             else if(event.keyCode == 37) this.key_left = true;
@@ -222,7 +306,7 @@
             else if(event.keyCode == 40) this.key_down = true;
         }
 
-        keyUp(event)
+        keyReleased(event)
         {
             if(event.keyCode == 39) this.key_right = false;
             else if(event.keyCode == 37) this.key_left = false;
@@ -232,27 +316,34 @@
 
         update()
         {
-            let dx = 0;
-            let dy = 0;
+            this.model.mario.savePrevX()
             if(this.key_right)
             {
-                dx+=10;
                 this.model.mario.flip = false;
+                this.model.mario.x += 5;
+                // this.view.backgroundLocation += 2;
+                this.model.mario.updateImageNum();
             }
             if(this.key_left)
             {
-                dx-=10;
                 this.model.mario.flip = true;
+                this.model.mario.x -= 5;
+                this.model.mario.updateImageNum();
+                // view.backgroundLocation -= 2;
             }
-            if(this.key_up) dy-=10;
-            if(this.key_down) dy+=10;
-            if(dx != 0 || dy !=0)
-                this.model.move(dx, dy);
-        }
+            //if(keyDown);
+            if(this.key_up)
+            {
+                this.model.mario.y-=2;
+                if(this.model.mario.frameCounter < 5)
+                    this.model.mario.vert_vel -= 5.3;
+            } 
+            }
     }
 
 let game = new Game();
-let timer = setInterval(function() {game.onTimer()}, 40);
+let timer = setInterval(function() {game.onTimer()}, 30);
+
 </script>
 
 </body>
