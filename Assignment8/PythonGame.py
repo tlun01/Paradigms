@@ -5,14 +5,12 @@ from pygame.locals import*
 from time import sleep
 
 class Sprite():
-	def __init__(self, x1, y1, w1, h1, image_url):
+	def __init__(self, x1, y1, w1, h1):
 		self.x = x1
 		self.y = y1
 		self.w = w1
 		self.h = h1
 		self.flip = False
-		# self.image = 
-		# self.image.src = image_url
 	
 	def checkCollsion(self, s):
 		if(self.x + self.w <= s.x):  #this right < sprite's left
@@ -27,16 +25,16 @@ class Sprite():
 
 
 class Brick(Sprite):
-	def __init__(self, x, y, w, h, image_url):
-		Sprite.__init__(x, y, w, h, image_url)
+	def __init__(self, x, y, w, h):
+		Sprite.__init__(x, y, w, h)
 
 	def update(self):
 		return True
 
 
 class Mario(Sprite):
-	def __init__(self, x, y, w, h, image_url):
-		Sprite.__init__(x, y, w, h, image_url)
+	def __init__(self, x, y, w, h):
+		Sprite.__init__(x, y, w, h)
 		self.flip = False
 		self.vert_vel = 0.0
 
@@ -46,16 +44,11 @@ class Mario(Sprite):
 		self.py = 0
 		self.px = 0
 
-		self.marioImage1 = Image()
-		self.marioImage1.src = "mario1.png"
-		self.marioImage2 = Image()
-		self.marioImage2.src = "mario2.png"
-		self.marioImage3 = Image()
-		self.marioImage3.src = "mario3.png"
-		self.marioImage4 = Image()
-		self.marioImage4.src = "mario4.png"
-		self.marioImage5 = Image()
-		self.marioImage5.src = "mario5.png"
+		self.marioImage1 = pygame.image.load("mario1.png")
+		self.marioImage2 = pygame.image.load("mario2.png")
+		self.marioImage3 = pygame.image.load("mario3.png")
+		self.marioImage4 = pygame.image.load("mario4.png")
+		self.marioImage5 = pygame.image.load("mario5.png")
 
 		self.marioImages = []
 		self.marioImages.append(self.marioImage1)
@@ -76,7 +69,7 @@ class Mario(Sprite):
 
 		if(self.y > 350):
 			self.vert_vel = 0.0
-			self.y = 350; # snap back to the ground
+			self.y = 350; #snap back to the ground
 
 		return True
 
@@ -113,21 +106,21 @@ class Mario(Sprite):
 class Model():
 	def __init__(self):
 		self.sprites = []
-		self.mario = Mario(0, 350, 60, 95, "mario1.png")
+		self.mario = Mario(0, 350, 60, 95)
 		self.sprites.append(self.mario)
-		self.brick = Brick(400, 100, 50, 50, "brick.png")
+		self.brick = Brick(400, 100, 50, 50)
 		self.sprites.append(self.brick)
-		self.brick = Brick(600, 225, 50, 50, "brick.png")
+		self.brick = Brick(600, 225, 50, 50)
 		self.sprites.append(self.brick)
-		self.brick2 = Brick(200, 200, 50, 50, "brick.png")
+		self.brick2 = Brick(200, 200, 50, 50)
 		self.sprites.append(self.brick2)
-		self.brick3 = Brick(250, 250, 50, 50, "brick.png")
+		self.brick3 = Brick(250, 250, 50, 50)
 		self.sprites.append(self.brick3)
-		self.brick4 = Brick(400, 400, 50, 50, "brick.png")
+		self.brick4 = Brick(400, 400, 50, 50)
 		self.sprites.append(self.brick4)
-		# self.coinBrick = CoinBrick(25, 250, 50, 50, "coinBrick.png")
+		# self.coinBrick = CoinBrick(25, 250, 50, 50)
 		# self.sprites.append(self.coinBrick)
-		# self.coinBrick1 = CoinBrick(100, 100, 50, 50, "coinBrick.png")
+		# self.coinBrick1 = CoinBrick(100, 100, 50, 50)
 		# self.sprites.append(self.coinBrick1)
 
 	def update(self):
@@ -152,6 +145,9 @@ class View():
 	def __init__(self, model):
 		screen_size = (800,600)
 		self.screen = pygame.display.set_mode(screen_size, 32)
+		self.backgroundLocation = 0
+		self.ground = pygame.image.load("floor.png")
+		self.background = pygame.image.load("cloudbackgroudn.jpg")
 		self.turtle_image = pygame.image.load("turtle.png")
 		self.model = model
 		self.model.rect = self.turtle_image.get_rect()
@@ -174,7 +170,7 @@ class Controller():
 			elif event.type == KEYDOWN:
 				if event.key == K_ESCAPE:
 					self.keep_going = False
-					
+
 		keys = pygame.key.get_pressed()
 		if keys[K_LEFT]:
 			self.model.mario.flip = True
