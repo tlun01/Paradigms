@@ -4,6 +4,10 @@ import time
 from pygame.locals import*
 from time import sleep
 
+class Sprite():
+	def __init__(self):
+		
+
 class Model():
 	def __init__(self):
 		self.dest_x = 0
@@ -59,7 +63,6 @@ class Controller():
 			self.model.dest_y -= 10
 		if keys[K_DOWN]:
 			self.model.dest_y += 10
-
 print("Use the arrow keys to move. Press Esc to quit.")
 pygame.init()
 m = Model()
@@ -71,3 +74,5 @@ while c.keep_going:
 	v.update()
 	sleep(0.04)
 print("Goodbye")
+
+
