@@ -245,7 +245,7 @@ while c.keep_going:
 	c.update()
 	m.update()
 	v.update()
-	sleep(0.04)
+	sleep(0.01)
 print("Goodbye")
 
 
