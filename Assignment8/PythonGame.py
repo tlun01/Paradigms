@@ -60,7 +60,7 @@ class Coin(Sprite):
 	def __init__(self, x, y, w, h, image_src):
 		Sprite.__init__(self, x, y, w, h, image_src)
 		self.vert_vel =- 10.0
-		self.num = random.uniform(-5.0, 5.0)
+		self.num = random.uniform(-7.5, 7.5)
 
 	def update(self):
 		self.y += self.vert_vel
@@ -185,16 +185,16 @@ class View():
 		screen_size = (800,600)
 		self.screen = pygame.display.set_mode(screen_size, 32)
 		self.backgroundLocation = 0
-		self.ground = pygame.image.load("floor.png")
-		self.background = pygame.image.load("cloudbackground.jpg")
+		self.ground = pygame.image.load("ground.png")
+		self.background = pygame.image.load("background.jpg")
 		self.model = model
 
 	def update(self):    
 		self.screen.fill([0,200,100])
-		resized_ground = pygame.transform.scale(self.ground, (1500, 200))
+		resized_ground = pygame.transform.scale(self.ground, (1500, 350))
 		resized_background = pygame.transform.scale(self.background, (1500, 500))
 		self.screen.blit(resized_background, (-100 + self.backgroundLocation, 0))
-		self.screen.blit(resized_ground, (-100 + self.backgroundLocation, 425))
+		self.screen.blit(resized_ground, (-100 + self.backgroundLocation, 250))
 
 		for i in range(len(self.model.sprites)): 
 			sprite = self.model.sprites[i]
@@ -226,11 +226,11 @@ class Controller():
 			self.model.mario.flip = True
 			self.model.mario.x -= 7.5
 			self.model.mario.updateImageNum()
-			self.view.backgroundLocation += 2
+			self.view.backgroundLocation += 3.5
 		if keys[K_RIGHT]:
 			self.model.mario.flip = False
 			self.model.mario.x += 7.5
-			self.view.backgroundLocation -= 2
+			self.view.backgroundLocation -= 3.5
 			self.model.mario.updateImageNum()
 		if keys[K_UP] or keys[K_SPACE]:
 			if(self.model.mario.frameCounter < 5):
@@ -246,7 +246,7 @@ while c.keep_going:
 	c.update()
 	m.update()
 	v.update()
-	sleep(0.01)
+	sleep(0.025)
 print("Goodbye")
 
 
