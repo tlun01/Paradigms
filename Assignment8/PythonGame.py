@@ -12,7 +12,7 @@ class Sprite():
 		self.h = h1
 		self.flip = False
 	
-	def checkCollsion(self, s):
+	def checkCollision(self, s):
 		if(self.x + self.w <= s.x):  #this right < sprite's left
 			return False
 		if(self.x >= s.x + s.w):  #this left > sprite's right
@@ -23,18 +23,27 @@ class Sprite():
 			return False
 		return True
 
+	def isBrick(self):
+		return False
+
+	def isCoinBrick(self):
+		return False
+
 
 class Brick(Sprite):
 	def __init__(self, x, y, w, h):
-		Sprite.__init__(x, y, w, h)
+		Sprite.__init__(self, x, y, w, h)
 
 	def update(self):
+		return True
+
+	def isBrick(self):
 		return True
 
 
 class Mario(Sprite):
 	def __init__(self, x, y, w, h):
-		Sprite.__init__(x, y, w, h)
+		Sprite.__init__(self, x, y, w, h)
 		self.flip = False
 		self.vert_vel = 0.0
 
@@ -147,7 +156,7 @@ class View():
 		self.screen = pygame.display.set_mode(screen_size, 32)
 		self.backgroundLocation = 0
 		self.ground = pygame.image.load("floor.png")
-		self.background = pygame.image.load("cloudbackgroudn.jpg")
+		self.background = pygame.image.load("cloudbackground.jpg")
 		self.turtle_image = pygame.image.load("turtle.png")
 		self.model = model
 		self.model.rect = self.turtle_image.get_rect()
@@ -190,7 +199,7 @@ print("Use the arrow keys to move. Press Esc to quit.")
 pygame.init()
 m = Model()
 v = View(m)
-c = Controller(m)
+c = Controller(m, v)
 while c.keep_going:
 	c.update()
 	m.update()
