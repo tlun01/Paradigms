@@ -3,36 +3,37 @@ import time
 
 from pygame.locals import*
 from time import sleep
+import random
 
 class Sprite():
-	def __init__(self, x1, y1, w1, h1):
+	def __init__(self, x1, y1, w1, h1, image_src):
 		self.x = x1
 		self.y = y1
 		self.w = w1
 		self.h = h1
 		self.flip = False
+		self.image = pygame.image.load(image_src)
 	
 	def checkCollision(self, s):
 		if(self.x + self.w <= s.x):  #this right < sprite's left
-			return False
+			return False	
 		if(self.x >= s.x + s.w):  #this left > sprite's right
 			return False
 		if(self.y >= s.y + s.h):  #this top underneath sprite base
-			return False
+			return False	
 		if(self.y + self.h <= s.y):   #this base over sprite's top
-			return False
+			return False	
 		return True
 
 	def isBrick(self):
 		return False
-
 	def isCoinBrick(self):
 		return False
 
 
 class Brick(Sprite):
-	def __init__(self, x, y, w, h):
-		Sprite.__init__(self, x, y, w, h)
+	def __init__(self, x, y, w, h, image_src):
+		Sprite.__init__(self, x, y, w, h, image_src)
 
 	def update(self):
 		return True
@@ -40,10 +41,40 @@ class Brick(Sprite):
 	def isBrick(self):
 		return True
 
+class CoinBrick(Sprite):
+	def __init__(self, x, y, w, h, image_src):
+		Sprite.__init__(self, x, y, w, h, image_src)
+		self.coinCounter = 0
+
+	def update(self):
+		if(self.coinCounter >= 5):
+			return False
+		else:
+			return True
+
+	def isCoinBrick(self):
+		return True
+
+
+class Coin(Sprite):
+	def __init__(self, x, y, w, h, image_src):
+		Sprite.__init__(self, x, y, w, h, image_src)
+		self.vert_vel =- 10.0
+		self.num = random.uniform(-5.0, 5.0)
+
+	def update(self):
+		self.y += self.vert_vel
+		self.x += self.num
+		self.vert_vel += 1.2
+
+		if(self.y > 400):
+			return False
+		else:
+			return True
 
 class Mario(Sprite):
-	def __init__(self, x, y, w, h):
-		Sprite.__init__(self, x, y, w, h)
+	def __init__(self, x, y, w, h, image_src):
+		Sprite.__init__(self, x, y, w, h, image_src)
 		self.flip = False
 		self.vert_vel = 0.0
 
@@ -115,39 +146,38 @@ class Mario(Sprite):
 class Model():
 	def __init__(self):
 		self.sprites = []
-		self.mario = Mario(0, 350, 60, 95)
+		self.mario = Mario(0, 350, 60, 95, "mario1.png")
 		self.sprites.append(self.mario)
-		self.brick = Brick(400, 100, 50, 50)
+		self.brick = Brick(400, 100, 50, 50, "brick.png")
 		self.sprites.append(self.brick)
-		self.brick = Brick(600, 225, 50, 50)
+		self.brick = Brick(600, 225, 50, 50, "brick.png")
 		self.sprites.append(self.brick)
-		self.brick2 = Brick(200, 200, 50, 50)
+		self.brick2 = Brick(200, 200, 50, 50, "brick.png")
 		self.sprites.append(self.brick2)
-		self.brick3 = Brick(250, 250, 50, 50)
+		self.brick3 = Brick(250, 250, 50, 50, "brick.png")
 		self.sprites.append(self.brick3)
-		self.brick4 = Brick(400, 400, 50, 50)
+		self.brick4 = Brick(400, 400, 50, 50, "brick.png")
 		self.sprites.append(self.brick4)
-		# self.coinBrick = CoinBrick(25, 250, 50, 50)
-		# self.sprites.append(self.coinBrick)
-		# self.coinBrick1 = CoinBrick(100, 100, 50, 50)
-		# self.sprites.append(self.coinBrick1)
+		self.coinBrick = CoinBrick(25, 250, 50, 50, "coinBrick.png")
+		self.sprites.append(self.coinBrick)
+		self.coinBrick1 = CoinBrick(100, 100, 50, 50, "coinBrick.png")
+		self.sprites.append(self.coinBrick1)
 
 	def update(self):
 		for i in range(len(self.sprites)):
 			if(not self.sprites[i].update()):
-				self.sprites.splice(i,1)
-				# break
+				self.sprites.pop(i)
+				break
 			if(self.sprites[i].isBrick() or self.sprites[i].isCoinBrick()):
 				if(self.mario.checkCollision(self.sprites[i])):
-					self.mario.getOutOfTheObstacle(self.sprites[i])
-						# turn ^ into an if statement after adding coins and coinbricks
-						# self.coin = Coin(self.sprites[i].x, self.sprites[i].y, self.sprites[i].w, self.sprites[i].h, "coin.png")
-						# self.sprites.push(self.coin)
-						# self.sprites[i].coinCounter += 1
-						# if(self.sprites[i].coinCounter >= 5):
-						# 	self.tempBrick = Brick(self.sprites[i].x, self.sprites[i].y, self.sprites[i].w, self.sprites[i].h, "brick.png")
-						# 	self.sprites.push(self.tempBrick)
-						# 	self.sprites.splice(i, 1)
+					if(self.mario.getOutOfTheObstacle(self.sprites[i])):
+						self.coin = Coin(self.sprites[i].x, self.sprites[i].y, self.sprites[i].w, self.sprites[i].h, "coin.png")
+						self.sprites.append(self.coin)
+						self.sprites[i].coinCounter += 1
+						if(self.sprites[i].coinCounter >= 5):
+							self.tempBrick = Brick(self.sprites[i].x, self.sprites[i].y, self.sprites[i].w, self.sprites[i].h, "brick.png")
+							self.sprites.append(self.tempBrick)
+							self.sprites.pop(i)
 
 
 class View():
@@ -157,13 +187,23 @@ class View():
 		self.backgroundLocation = 0
 		self.ground = pygame.image.load("floor.png")
 		self.background = pygame.image.load("cloudbackground.jpg")
-		self.turtle_image = pygame.image.load("turtle.png")
 		self.model = model
-		self.model.rect = self.turtle_image.get_rect()
 
 	def update(self):    
 		self.screen.fill([0,200,100])
-		self.screen.blit(self.turtle_image, self.model.rect)
+		resized_ground = pygame.transform.scale(self.ground, (1500, 200))
+		resized_background = pygame.transform.scale(self.background, (1500, 500))
+		self.screen.blit(resized_background, (-100 + self.backgroundLocation, 0))
+		self.screen.blit(resized_ground, (-100 + self.backgroundLocation, 425))
+
+		for i in range(len(self.model.sprites)): 
+			sprite = self.model.sprites[i]
+			resized = pygame.transform.scale(sprite.image, (sprite.w, sprite.h))
+			if(sprite.flip):
+				flipped = pygame.transform.flip(resized, True, False)
+				self.screen.blit(flipped, (sprite.x - self.model.mario.x + self.model.mario.screenLocation, sprite.y))
+			else:
+				self.screen.blit(resized, (sprite.x - self.model.mario.x + self.model.mario.screenLocation, sprite.y))
 		pygame.display.flip()
 
 class Controller():
@@ -181,14 +221,15 @@ class Controller():
 					self.keep_going = False
 
 		keys = pygame.key.get_pressed()
+		self.model.mario.savePrevX()
 		if keys[K_LEFT]:
 			self.model.mario.flip = True
-			self.model.mario.x -= 5
+			self.model.mario.x -= 7.5
 			self.model.mario.updateImageNum()
 			self.view.backgroundLocation += 2
 		if keys[K_RIGHT]:
 			self.model.mario.flip = False
-			self.model.mario.x += 5
+			self.model.mario.x += 7.5
 			self.view.backgroundLocation -= 2
 			self.model.mario.updateImageNum()
 		if keys[K_UP]:
