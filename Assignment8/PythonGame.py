@@ -232,9 +232,10 @@ class Controller():
 			self.model.mario.x += 7.5
 			self.view.backgroundLocation -= 2
 			self.model.mario.updateImageNum()
-		if keys[K_UP]:
+		if keys[K_UP] or keys[K_SPACE]:
 			if(self.model.mario.frameCounter < 5):
 				self.model.mario.vert_vel -= 5.3
+
 
 print("Use the arrow keys to move. Press Esc to quit.")
 pygame.init()
