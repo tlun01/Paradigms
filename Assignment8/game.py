@@ -67,7 +67,7 @@ class Coin(Sprite):
 		self.x += self.num
 		self.vert_vel += 1.2
 
-		if(self.y > 400):
+		if(self.y > 600):
 			return False
 		else:
 			return True
